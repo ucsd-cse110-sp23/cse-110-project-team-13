@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,12 +26,17 @@ import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+//required for scrolling
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 
 class Question extends JPanel {
 
-  JLabel index;
-  JTextField taskName;
-  JButton doneButton;
+  JLabel index;         //might be needed
+  JTextField taskName;  //text of the question
+  JButton doneButton;   //delete question
+  JButton answerButton; //ask the question again
 
   Color gray = new Color(218, 229, 234);
   Color green = new Color(188, 226, 158);
@@ -61,6 +67,9 @@ class Question extends JPanel {
     doneButton.setBorder(BorderFactory.createEmptyBorder());
     doneButton.setFocusPainted(false);
 
+    //TODO: Implement answer button 
+    //answerButton = new JButton(); 
+    
     this.add(doneButton, BorderLayout.EAST);
   }
 
@@ -100,6 +109,9 @@ class Body extends JPanel {
   private JPanel prompt;
   public JPanel history; //used to be private
 
+  //Scroll Panes for history 
+  public JScrollPane scrollHistory;
+
   Body() {
     prompt = new JPanel();
     history = new JPanel();
@@ -114,7 +126,7 @@ class Body extends JPanel {
     
     // Set the preferred sizes of the prompt and history panels
     prompt.setPreferredSize(new Dimension(400, 370));
-    history.setPreferredSize(new Dimension(400, 190));
+    history.setPreferredSize(new Dimension(400, 1000));
     
     // Add the prompt panel to this JPanel, taking up 2/3 of the available space
     gbc.gridx = 0;
@@ -125,6 +137,13 @@ class Body extends JPanel {
     gbc.insets.set(10, 10, 5, 10);
     this.add(prompt, gbc);
     
+
+    //Adding scrolling features
+    scrollHistory = new JScrollPane(this.history);
+    scrollHistory.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollHistory.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    //scrollHistory.setPreferredSize(new Dimension(100, 10000));
+    
     // Add the history panel to this JPanel, taking up 1/3 of the available space
     gbc.gridx = 0;
     gbc.gridy = 1;
@@ -132,9 +151,9 @@ class Body extends JPanel {
     gbc.weighty = 0.333;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.insets.set(5, 10, 10, 10);
-    this.add(history, gbc);
-    
-    this.setPreferredSize(new Dimension(400, 560));
+    this.add(scrollHistory, gbc);
+  
+    this.setPreferredSize(new Dimension(400, 960));
     this.setBackground(backgroundColor);
   }
 
@@ -302,6 +321,7 @@ class AppFrame extends JFrame {
       }
     );
 
+    //clear all questions from history
     clearButton.addMouseListener(
       new MouseAdapter() {
         @override
