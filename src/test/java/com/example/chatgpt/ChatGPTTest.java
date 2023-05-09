@@ -1,5 +1,9 @@
+package com.example.chatgpt;
+
+import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ChatGPTTest {
     
@@ -18,16 +22,13 @@ public class ChatGPTTest {
     }
 
     @Test
-    public void testAPIEndpointWithLongPrompt() throws Exception {
-        // Arrange
-        String prompt = "This is a very long prompt that is over 2048 characters long. This should cause an error when sent to the OpenAI API.";
-        int maxTokens = 50;
-        
-        // Act & Assert
-        Assertions.assertThrows(IOException.class, () -> {
-            ChatGPT.generateText(prompt, maxTokens);
+    public void testAPIEndpointWithLongPrompt() {
+        String longPrompt = "a".repeat(2049);
+        assertThrows(IllegalArgumentException.class, () -> {
+            ChatGPT.generateText(longPrompt, 5);
         });
     }
+
 
     @Test
     public void testAPIEndpointWithLargeMaxTokens() throws Exception {

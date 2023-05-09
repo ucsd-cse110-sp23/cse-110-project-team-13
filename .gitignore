@@ -1,0 +1,17 @@
+.gradle/
+build/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.swp
+*.bak
+*~
+*.iml
+.idea/
+*.properties
