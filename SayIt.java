@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,11 +21,22 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+//required for icons if needed
+import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+//required for scrolling
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+
 class Question extends JPanel {
 
-  JLabel index;
-  JTextField taskName;
-  JButton doneButton;
+  JLabel index;         //might be needed
+  JTextField taskName;  //text of the question
+  JButton doneButton;   //delete question
+  JButton answerButton; //ask the question again
 
   Color gray = new Color(218, 229, 234);
   Color green = new Color(188, 226, 158);
@@ -50,21 +62,55 @@ class Question extends JPanel {
 
     this.add(taskName, BorderLayout.CENTER);
 
-    doneButton = new JButton("Done");
-    doneButton.setPreferredSize(new Dimension(80, 20));
+    doneButton = new JButton("Delete Question");
+    doneButton.setPreferredSize(new Dimension(120, 20));
     doneButton.setBorder(BorderFactory.createEmptyBorder());
     doneButton.setFocusPainted(false);
 
+    //TODO: Implement answer button 
+    //answerButton = new JButton(); 
+    
     this.add(doneButton, BorderLayout.EAST);
   }
 
+  //Methods from Lab 5 used for Project (may be removed)
+  public void changeIndex(int num) {
+    this.index.setText(num + ""); // num to String
+    this.revalidate(); // refresh
+  }
+
+  public JButton getDone() {
+    return doneButton;
+  }
+
+  public boolean getState() {
+    return markedDone;
+  }
+
+  public void changeState() {
+    if (markedDone == true) {
+      this.setBackground(gray);
+      taskName.setBackground(gray);
+      markedDone = false;
+    }
+    else {
+      this.setBackground(green);
+      taskName.setBackground(green);
+      markedDone = true;
+    }
+    revalidate();
+  }
 }
+
 
 class Body extends JPanel {
 
   Color backgroundColor = new Color(240, 248, 255);
   private JPanel prompt;
-  private JPanel history;
+  public JPanel history; //used to be private
+
+  //Scroll Panes for history 
+  public JScrollPane scrollHistory;
 
   Body() {
     prompt = new JPanel();
@@ -80,7 +126,7 @@ class Body extends JPanel {
     
     // Set the preferred sizes of the prompt and history panels
     prompt.setPreferredSize(new Dimension(400, 370));
-    history.setPreferredSize(new Dimension(400, 190));
+    history.setPreferredSize(new Dimension(400, 1000));
     
     // Add the prompt panel to this JPanel, taking up 2/3 of the available space
     gbc.gridx = 0;
@@ -91,6 +137,13 @@ class Body extends JPanel {
     gbc.insets.set(10, 10, 5, 10);
     this.add(prompt, gbc);
     
+
+    //Adding scrolling features
+    scrollHistory = new JScrollPane(this.history);
+    scrollHistory.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollHistory.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    //scrollHistory.setPreferredSize(new Dimension(100, 10000));
+    
     // Add the history panel to this JPanel, taking up 1/3 of the available space
     gbc.gridx = 0;
     gbc.gridy = 1;
@@ -98,11 +151,65 @@ class Body extends JPanel {
     gbc.weighty = 0.333;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.insets.set(5, 10, 10, 10);
-    this.add(history, gbc);
-    
-    this.setPreferredSize(new Dimension(400, 560));
+    this.add(scrollHistory, gbc);
+  
+    this.setPreferredSize(new Dimension(400, 960));
     this.setBackground(backgroundColor);
   }
+
+  //Methods from Lab 5 used for Project (may be removed)
+  //updates number in question history
+  public void updateNumbers() {
+    Component[] listItems = this.getComponents();
+
+    for (int i = 0; i < listItems.length; i++) {
+      if (listItems[i] instanceof Question) {
+        ((Question) listItems[i]).changeIndex(i + 1);
+      }
+    }
+  }
+
+  //removes question(s) from question history 
+  public void removeQuestionHistory() {
+    for (Component c : history.getComponents()) {
+      if (c instanceof Question) {
+        history.remove(c); // remove the component
+      }
+    }
+  }
+  
+
+  //Loads Previous Questions from Text File
+  public ArrayList<Question> loadQuestions() {
+    ArrayList<Question> questionList = new ArrayList<Question>();
+
+    try{
+      FileReader reader = new FileReader("questions.txt");
+      BufferedReader buffer = new BufferedReader(reader);
+      String line = "";
+
+      while (line != null){
+        line = buffer.readLine();
+        if (line == null) {
+          break; 
+        }
+        Question question = new Question();
+        question.taskName.setText(line);
+        questionList.add(question);
+      }
+
+      buffer.close();
+      reader.close();
+
+      this.updateNumbers();
+      this.revalidate();
+    }
+    catch(Exception e){
+      e.getStackTrace();
+    }
+
+    return questionList; 
+  } 
 
 }
 
@@ -121,20 +228,20 @@ class Footer extends JPanel {
     this.setBackground(backgroundColor);
     this.setLayout(new GridLayout(1, 4));
 
-    addButton = new JButton("Add Question"); // add task button
-    addButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
+    addButton = new JButton("New Question"); // add task button
+    addButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
     this.add(addButton); // add to footer
 
-    clearButton = new JButton("Clear finished"); // clear button
-    clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
+    clearButton = new JButton("Clear All"); // clear button
+    clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
     this.add(clearButton); // add to footer
 
     loadButton = new JButton("Load Questions");
-    loadButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
+    loadButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
     this.add(loadButton);
 
     saveButton = new JButton("Save Questions");
-    saveButton.setFont(new Font("Sans-serif", Font.ITALIC, 10)); // set font
+    saveButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
     this.add(saveButton);
   }
 
@@ -201,7 +308,6 @@ class AppFrame extends JFrame {
     saveButton = footer.getSaveButton();
 
     addListeners();
-
     this.revalidate();
   }
 
@@ -215,19 +321,43 @@ class AppFrame extends JFrame {
       }
     );
 
+    //clear all questions from history
     clearButton.addMouseListener(
       new MouseAdapter() {
         @override
         public void mousePressed(MouseEvent e) {
-          
+          list.removeQuestionHistory();
+          repaint(); 
+          revalidate();
         }
       }
     );
 
+
+    //load previous questions
     loadButton.addMouseListener(
       new MouseAdapter() {
         @override
         public void mousePressed(MouseEvent e){
+          ArrayList<Question> questionList = new ArrayList<Question>();
+          questionList = list.loadQuestions();
+          for (int i = 0; i  < questionList.size(); i++) {
+            Question newQuestion = questionList.get(i);
+            list.history.add(newQuestion); 
+
+            //Delete question from history
+            JButton doneButton = newQuestion.getDone(); 
+            doneButton.addMouseListener(
+              new MouseAdapter(){
+                @override
+                public void mousePressed(MouseEvent e2){
+                  list.history.remove(newQuestion);
+                  list.repaint(); 
+                  revalidate(); 
+                }
+              }
+            );
+          }
           
         }
       }
