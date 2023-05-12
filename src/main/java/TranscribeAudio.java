@@ -1,3 +1,4 @@
+package main.java;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -8,13 +9,14 @@ public class TranscribeAudio {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String TOKEN = "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";
     private static final String MODEL = "whisper-1";
-    //private static final String FILE_PATH = "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/TestFiles/Lab4.m4a";
+    private static final String FILE_PATH = "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/TestFiles/Lab4.m4a";
 
     public static void main(String[] args) {
         try {
-        String transcription = transcribeAudio(args[0]);
+        String transcription = transcribeAudio(FILE_PATH);
         System.out.println(transcription);
         } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -69,7 +71,7 @@ public class TranscribeAudio {
     }
 
     public static String handleResponse(int responseCode, HttpURLConnection connection) {
-        String transcription;
+        String transcription = "";
         try {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 transcription = handleSuccess.handleSuccessResponse(connection);
@@ -77,7 +79,7 @@ public class TranscribeAudio {
                 transcription = handleError.handleErrorResponse(connection);
             }
         } catch (IOException exception) {
-            transcription = "";
+            exception.printStackTrace();
         }
         return transcription;
     }
