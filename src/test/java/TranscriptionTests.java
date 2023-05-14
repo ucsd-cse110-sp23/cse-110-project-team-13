@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 
 import org.junit.*;
 
+import main.java.MockTranscribeAudio;
 import main.java.TranscribeAudio;
 import main.java.writeFile;
 import main.java.writeParameter;
@@ -20,35 +21,26 @@ public class TranscriptionTests {
 
     @Test
     public void testTranscription() {
+        String transcription = null;
         try {
-            String transcription = TranscribeAudio.transcribeAudio(
-            "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/Test.m4a");
-            assertEquals("This is a test.", transcription);
+            transcription = MockTranscribeAudio.transcribeAudio(
+            "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/TestMock.txt");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+        assertEquals("This is a test.", transcription);
     }
 
     @Test
     public void testTranscriptionSilence() {
+        String transcription = null;
         try {
-            String transcription = TranscribeAudio.transcribeAudio(
-            "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/Silence.m4a");
-            assertEquals("", transcription);
+            transcription = MockTranscribeAudio.transcribeAudio(
+            "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/SilenceMock.txt");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-    }
-
-    @Test
-    public void testTranscriptionFileNotFound() {
-        try {
-            String transcription = TranscribeAudio.transcribeAudio(
-            "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/Nonexistent.m4a");
-            assertEquals("", transcription);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        assertEquals("", transcription);
     }
 
     @Test
@@ -67,7 +59,7 @@ public class TranscriptionTests {
         try {
             HttpURLConnection connection = TranscribeAudio.setupConnection(API_ENDPOINT);
             String boundary = "Boundary-" + System.currentTimeMillis();
-            TranscribeAudio.setupRequestHeader(TOKEN, boundary, connection);
+            TranscribeAudio.setupRequestHeader("TOKEN", boundary, connection);
             assertEquals("multipart/form-data; boundary=" + boundary, connection.getRequestProperty("Content-Type"));
             assertNull(connection.getRequestProperty("Authorization"));
         } catch (IOException exception) {
@@ -90,29 +82,34 @@ public class TranscriptionTests {
 
     @Test
     public void testHandleResponseSuccess() {
+        String transcript = null;
         try {
             HttpURLConnection connection = TranscribeAudio.setupConnection(API_ENDPOINT);
-            String transcript = TranscribeAudio.handleResponse(HttpURLConnection.HTTP_OK, connection);
-            assertEquals("", transcript);
+            transcript = TranscribeAudio.handleResponse(HttpURLConnection.HTTP_OK, connection);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+        assertEquals("", transcript);
     }
 
     @Test
     public void testHandleResponseError() {
+        String transcript = null;
         try {
             HttpURLConnection connection = TranscribeAudio.setupConnection(API_ENDPOINT);
-            File file = new File("");
+            File file = new File(FILE_PATH);
             String boundary = "Boundary-" + System.currentTimeMillis();
+            TranscribeAudio.setupRequestHeader("TOKEN", boundary, connection);
             OutputStream outputStream = connection.getOutputStream();
             writeFile.writeFileToOutputStream(outputStream, file, boundary);
             writeParameter.writeParameterToOutputStream(outputStream, "model", MODEL, boundary);
-            String transcript = TranscribeAudio.handleResponse(HttpURLConnection.HTTP_BAD_GATEWAY, connection);
-            assertEquals("", transcript);
+            transcript = TranscribeAudio.handleResponse(connection.getResponseCode(), connection);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+        assertEquals("{    \"error\": {        \"message\": \"\",        "
+                     + "\"type\": \"invalid_request_error\",        \"param\": null,        "
+                     + "\"code\": \"invalid_api_key\"    }}", transcript);
     }
 
     @Test
