@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class writeFile {
+public class WriteToOutput {
     public static void writeFileToOutputStream(
         OutputStream outputStream,
         File file,
@@ -27,5 +27,20 @@ public class writeFile {
             outputStream.write(buffer, 0, bytesRead);
         }
         fileInputStream.close();
+    }
+
+    public static void writeParameterToOutputStream(
+        OutputStream outputStream,
+        String parameterName,
+        String parameterValue,
+        String boundary
+    ) throws IOException {
+        outputStream.write(("--" + boundary + "\r\n").getBytes());
+        outputStream.write(
+            (
+                "Content-Disposition: form-data; name=\"" + parameterName + "\"\r\n\r\n"
+            ).getBytes()
+        );
+        outputStream.write((parameterValue + "\r\n").getBytes());
     }
 }
