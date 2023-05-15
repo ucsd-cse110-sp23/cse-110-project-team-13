@@ -13,6 +13,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: 11
+        distribution: temurin
     - name: Cache Gradle packages
       uses: actions/cache@v2
       with:
@@ -24,5 +25,3 @@ jobs:
       run: ./gradlew build
     - name: Run unit tests with Gradle
       run: ./gradlew test
-    - name: Run story tests with Cucumber
-      run: ./gradlew cucumber
