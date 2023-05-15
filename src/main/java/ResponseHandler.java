@@ -1,4 +1,3 @@
-package main.java;
 import java.net.HttpURLConnection;
 import java.io.IOException;
 import org.json.JSONObject;

@@ -1,5 +1,3 @@
-package main.java;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import javax.sound.sampled.TargetDataLine;

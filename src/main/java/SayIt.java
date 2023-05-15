@@ -114,6 +114,7 @@ class Body extends JPanel {
   public JPanel prompt;
   public JPanel history; //used to be private
   public DefaultListModel<String> model;
+  public boolean micOpen;
 
   //Scroll Panes for history 
   public JScrollPane scrollHistory;
@@ -121,6 +122,7 @@ class Body extends JPanel {
   Body() {
     prompt = new JPanel();
     history = new JPanel();
+    micOpen = false;
 
     // Set the layout manager of this JPanel to GridBagLayout
     this.setLayout(new GridBagLayout());
@@ -391,11 +393,21 @@ class AppFrame extends JFrame {
       new MouseAdapter() {
         @override
         public void mousePressed(MouseEvent e) {
-          try {
-            list.newQuestion("Who is the 1st president of the United States?");
+          Recording recording = new Recording();
+          if (list.micOpen == false){
+            recording.openMicrophone();
+            list.micOpen = true;
           }
-          catch (IOException | InterruptedException e2){
-            System.out.println("Error");
+          else{
+            recording.closeMicrophone();
+            list.micOpen = false;
+            try {
+              String transcript = TranscribeAudio.transcribeAudio("recording.wav");
+              list.newQuestion(transcript);
+            }
+            catch (IOException | InterruptedException e2){
+              System.out.println("Error");
+            }
           }
         }
       }
