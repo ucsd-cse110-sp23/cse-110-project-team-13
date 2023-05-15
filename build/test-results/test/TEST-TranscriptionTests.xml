@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TranscriptionTests" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-05-15T18:41:52" hostname="LAPTOP-PHAURQUR" time="0.226">
+<testsuite name="TranscriptionTests" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-05-15T18:43:42" hostname="LAPTOP-PHAURQUR" time="0.317">
   <properties/>
   <testcase name="testHandleResponseSuccess" classname="TranscriptionTests" time="0.005"/>
-  <testcase name="testTranscriptionSilence" classname="TranscriptionTests" time="0.006"/>
-  <testcase name="testCloseRequestBody" classname="TranscriptionTests" time="0.094"/>
-  <testcase name="testWriteFile" classname="TranscriptionTests" time="0.078"/>
-  <testcase name="testWriteParameter" classname="TranscriptionTests" time="0.029"/>
+  <testcase name="testTranscriptionSilence" classname="TranscriptionTests" time="0.004"/>
+  <testcase name="testCloseRequestBody" classname="TranscriptionTests" time="0.092"/>
+  <testcase name="testWriteFile" classname="TranscriptionTests" time="0.169"/>
+  <testcase name="testWriteParameter" classname="TranscriptionTests" time="0.034"/>
   <testcase name="testSetupRequestHeader" classname="TranscriptionTests" time="0.001"/>
-  <testcase name="testTranscription" classname="TranscriptionTests" time="0.0"/>
-  <testcase name="testSetupConnection" classname="TranscriptionTests" time="0.0"/>
+  <testcase name="testTranscription" classname="TranscriptionTests" time="0.001"/>
+  <testcase name="testSetupConnection" classname="TranscriptionTests" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[java.io.FileNotFoundException: \Users\Daniel\Documents\CSE 110\cse-110-project-team-13\src\test\java\TestFiles\Test.m4a (The system cannot find the path specified)
 	at java.base/java.io.FileInputStream.open0(Native Method)
@@ -50,11 +50,10 @@
 	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
 	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
 	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
-	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
-	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:99)
-	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:79)
-	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:75)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:61)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:110)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:90)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:85)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:62)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -69,8 +68,8 @@
 	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:100)
 	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:60)
 	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
-	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:133)
-	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:113)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:65)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
 ]]></system-err>
