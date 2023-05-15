@@ -1,3 +1,5 @@
+package test.java;
+
 import static org.junit.Assert.*;
 import java.io.File;
 import org.junit.Before;
@@ -5,6 +7,8 @@ import org.junit.After;
 import org.junit.Test;
 import javax.sound.sampled.*;
 import javax.sound.sampled.AudioFileFormat.Type;
+
+import main.java.*;
 
 public class MockRecorderTest {
     private MockRecording recording;

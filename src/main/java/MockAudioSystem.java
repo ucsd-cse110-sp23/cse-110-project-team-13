@@ -1,3 +1,5 @@
+package main.java;
+
 import javax.sound.sampled.AudioFileFormat;
 import java.io.File;
 

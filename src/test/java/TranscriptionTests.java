@@ -11,12 +11,7 @@ import java.net.HttpURLConnection;
 
 import org.junit.*;
 
-import main.java.ConnectionSetup;
-import main.java.CreateRequest;
-import main.java.MockResponseHandler;
-import main.java.MockTranscribeAudio;
-import main.java.ResponseHandler;
-import main.java.WriteToOutput;
+import main.java.*;
 public class TranscriptionTests {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String MODEL = "whisper-1";
