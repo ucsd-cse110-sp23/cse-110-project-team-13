@@ -21,11 +21,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.html.ListView;
 //required for icons if needed
 import javax.swing.Box;
@@ -66,10 +69,9 @@ class Question extends JPanel {
     taskName.setBorder(BorderFactory.createEmptyBorder()); // remove border of text field
     taskName.setBackground(gray); // set background color of text field
     taskName.setEditable(false);
-
     this.add(taskName, BorderLayout.CENTER);
 
-    doneButton = new JButton("Delete Question");
+    doneButton = new JButton("Delete");
     doneButton.setPreferredSize(new Dimension(120, 20));
     doneButton.setBorder(BorderFactory.createEmptyBorder());
     doneButton.setFocusPainted(false);
@@ -138,7 +140,9 @@ class Body extends JPanel {
     qnaList.setCellRenderer(new AlternatingRowRenderer());
 
     JPanel qnaPanel = new JPanel(new BorderLayout());
-    qnaPanel.add(new JScrollPane(qnaList), BorderLayout.CENTER);
+    JScrollPane qnaScroll = new JScrollPane(qnaList);
+    qnaScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    qnaPanel.add(qnaScroll, BorderLayout.CENTER);
 
     prompt.setLayout(new BorderLayout());
     prompt.add(qnaPanel, BorderLayout.CENTER);
@@ -259,6 +263,7 @@ class Body extends JPanel {
 
     history.add(newQuestion);
     model.addElement(generatedText);
+    this.revalidate();
   }
 
   public void saveQuestions() {
