@@ -41,7 +41,7 @@ class Question extends JPanel {
   JLabel index;         //might be needed
   JTextField taskName;  //text of the question
   JButton doneButton;   //delete question
-  JButton answerButton; //ask the question again
+  String answer;
 
   Color gray = new Color(218, 229, 234);
   Color green = new Color(188, 226, 158);
@@ -55,6 +55,7 @@ class Question extends JPanel {
     this.setLayout(new BorderLayout()); // set layout of task
 
     markedDone = false;
+    answer = "";
 
     index = new JLabel(""); // create index label
     index.setPreferredSize(new Dimension(20, 20)); // set size of index label
@@ -64,6 +65,7 @@ class Question extends JPanel {
     taskName = new JTextField(""); // create task name text field
     taskName.setBorder(BorderFactory.createEmptyBorder()); // remove border of text field
     taskName.setBackground(gray); // set background color of text field
+    taskName.setEditable(false);
 
     this.add(taskName, BorderLayout.CENTER);
 
@@ -109,7 +111,7 @@ class Body extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
   public JPanel prompt;
   public JPanel history; //used to be private
-  private DefaultListModel<String> model;
+  public DefaultListModel<String> model;
 
   //Scroll Panes for history 
   public JScrollPane scrollHistory;
@@ -207,6 +209,8 @@ class Body extends JPanel {
         }
         Question question = new Question();
         question.taskName.setText(line);
+        line = buffer.readLine();
+        question.answer = line;
         questionList.add(question);
       }
 
@@ -232,16 +236,50 @@ class Body extends JPanel {
     doneButton.addMouseListener(
       new MouseAdapter(){
         @Override
-        public void mousePressed(MouseEvent e2){
+        public void mousePressed(MouseEvent e){
           history.remove(newQuestion);
           repaint(); 
           revalidate(); 
         }
       }
     );
-    history.add(newQuestion);
+
     generatedText = ChatGPT.generateText(question, 2048);
+    newQuestion.answer = generatedText;
+    newQuestion.taskName.addMouseListener(
+      new MouseAdapter(){
+        @Override
+        public void mousePressed(MouseEvent e){
+          model.clear();
+          model.addElement(newQuestion.taskName.getText());
+          model.addElement(newQuestion.answer);
+        }
+      }
+    );
+
+    history.add(newQuestion);
     model.addElement(generatedText);
+  }
+
+  public void saveQuestions() {
+    try {
+      FileWriter writer = new FileWriter("questions.txt");
+      Component[] listItems = history.getComponents();
+
+      for (int i = 0; i < listItems.length; i++) {
+        if (listItems[i] instanceof Question) {
+          writer.write(((Question) listItems[i]).taskName.getText());
+          writer.write("\n");
+          writer.write(((Question) listItems[i]).answer);
+          writer.write("\n");
+          writer.flush();
+        }
+      }
+      writer.close();
+    }
+    catch (Exception e){
+      e.getStackTrace();
+    }
   }
 
 }
@@ -364,6 +402,7 @@ class AppFrame extends JFrame {
         @override
         public void mousePressed(MouseEvent e) {
           list.removeQuestionHistory();
+          list.model.clear();
           repaint(); 
           revalidate();
         }
@@ -394,8 +433,17 @@ class AppFrame extends JFrame {
                 }
               }
             );
+            newQuestion.taskName.addMouseListener(
+              new MouseAdapter(){
+                @Override
+                public void mousePressed(MouseEvent e){
+                  list.model.clear();
+                  list.model.addElement(newQuestion.taskName.getText());
+                  list.model.addElement(newQuestion.answer);
+                }
+              }
+            );
           }
-          
         }
       }
     );
@@ -404,7 +452,7 @@ class AppFrame extends JFrame {
       new MouseAdapter() {
         @override
         public void mousePressed(MouseEvent e){
-          
+          list.saveQuestions();
         }
       }
     );
