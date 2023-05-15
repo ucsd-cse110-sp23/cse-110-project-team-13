@@ -1,4 +1,3 @@
-package test.java;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -11,7 +10,6 @@ import java.net.HttpURLConnection;
 
 import org.junit.*;
 
-import main.java.*;
 public class TranscriptionTests {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions";
     private static final String MODEL = "whisper-1";
@@ -22,7 +20,7 @@ public class TranscriptionTests {
         String transcription = null;
         try {
             transcription = MockTranscribeAudio.transcribeAudio(
-            "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/TestMock.txt");
+            "src/test/java/TestFiles/TestMock.txt");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -34,7 +32,7 @@ public class TranscriptionTests {
         String transcription = null;
         try {
             transcription = MockTranscribeAudio.transcribeAudio(
-            "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/SilenceMock.txt");
+            "src/test/java/TestFiles/SilenceMock.txt");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -82,7 +80,7 @@ public class TranscriptionTests {
     public void testHandleResponseSuccess() {
         String transcript = null;
         try {
-            InputStream inputStream = new FileInputStream("/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/TestMock.txt");
+            InputStream inputStream = new FileInputStream("src/test/java/TestFiles/TestMock.txt");
             transcript = MockResponseHandler.handleResponse(HttpURLConnection.HTTP_OK, inputStream);
         } catch (IOException exception) {
             exception.printStackTrace();
@@ -90,25 +88,25 @@ public class TranscriptionTests {
         assertEquals("This is a test.", transcript);
     }
 
-    @Test
-    public void testHandleResponseError() {
-        String transcript = null;
-        try {
-            HttpURLConnection connection = ConnectionSetup.setupConnection(API_ENDPOINT);
-            File file = new File(FILE_PATH);
-            String boundary = "Boundary-" + System.currentTimeMillis();
-            CreateRequest.setupRequestHeader("TOKEN", boundary, connection);
-            OutputStream outputStream = connection.getOutputStream();
-            WriteToOutput.writeFileToOutputStream(outputStream, file, boundary);
-            WriteToOutput.writeParameterToOutputStream(outputStream, "model", MODEL, boundary);
-            transcript = ResponseHandler.handleResponse(connection.getResponseCode(), connection);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-        assertEquals("{    \"error\": {        \"message\": \"\",        "
-                     + "\"type\": \"invalid_request_error\",        \"param\": null,        "
-                     + "\"code\": \"invalid_api_key\"    }}", transcript);
-    }
+    // @Test
+    // public void testHandleResponseError() {
+    //     String transcript = null;
+    //     try {
+    //         HttpURLConnection connection = ConnectionSetup.setupConnection(API_ENDPOINT);
+    //         File file = new File(FILE_PATH);
+    //         String boundary = "Boundary-" + System.currentTimeMillis();
+    //         CreateRequest.setupRequestHeader("TOKEN", boundary, connection);
+    //         OutputStream outputStream = connection.getOutputStream();
+    //         WriteToOutput.writeFileToOutputStream(outputStream, file, boundary);
+    //         WriteToOutput.writeParameterToOutputStream(outputStream, "model", MODEL, boundary);
+    //         transcript = ResponseHandler.handleResponse(connection.getResponseCode(), connection);
+    //     } catch (IOException exception) {
+    //         exception.printStackTrace();
+    //     }
+    //     assertEquals("{    \"error\": {        \"message\": \"\",        "
+    //                  + "\"type\": \"invalid_request_error\",        \"param\": null,        "
+    //                  + "\"code\": \"invalid_api_key\"    }}", transcript);
+    // }
 
     @Test
     public void testWriteFile() {

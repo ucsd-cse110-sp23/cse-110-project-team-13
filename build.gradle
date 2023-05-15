@@ -20,6 +20,7 @@ dependencies {
     // This provides the TestEngine to actually run the tests.
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     implementation files('lib/json-20230227.jar')
+    implementation files('lib/junit-platform-console-standalone-1.9.3.jar')
 }
 
 test {

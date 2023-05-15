@@ -1,5 +1,3 @@
-package test.java;
-
 import org.junit.Test;
 import org.junit.Before;
 
@@ -10,7 +8,6 @@ import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
 
-import main.java.*;
 public class VoiceRecognitionTests {
     MockRecording recording;
 
@@ -29,7 +26,7 @@ public class VoiceRecognitionTests {
         String filePath = MockAudioSystem.getFile().getAbsolutePath();
         assertNotNull(system);
         assertNotNull(filePath);
-        filePath = "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/TestMock.txt";
+        filePath = "src/test/java/TestFiles/TestMock.txt";
         try {
             transcript = MockTranscribeAudio.transcribeAudio(filePath);
         } catch (IOException exception) {
@@ -48,7 +45,7 @@ public class VoiceRecognitionTests {
         String filePath = MockAudioSystem.getFile().getAbsolutePath();
         assertNotNull(system);
         assertNotNull(filePath);
-        filePath = "/Users/Daniel/Documents/CSE 110/cse-110-project-team-13/src/test/java/TestFiles/SilenceMock.txt";
+        filePath = "src/test/java/TestFiles/SilenceMock.txt";
         try {
             transcript = MockTranscribeAudio.transcribeAudio(filePath);
         } catch (IOException exception) {
