@@ -1,5 +1,4 @@
 package com.example.chatgpt;
-
 import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,21 +8,24 @@ public class ChatGPTTest {
     
     @Test
     public void testAPIEndpoint() throws Exception {
-        // Arrange
+        //Create prompt
         String prompt = "What is the meaning of life?";
         int maxTokens = 50;
         
-        // Act
+        //Generate text from ChatGPT API
         String generatedText = ChatGPT.generateText(prompt, maxTokens);
         
-        // Assert
+        //Test if response received from API
         Assertions.assertNotNull(generatedText);
         Assertions.assertTrue(generatedText.length() > 0);
     }
 
     @Test
     public void testAPIEndpointWithLongPrompt() {
+        //Create extremely long prompt
         String longPrompt = "a".repeat(2049);
+        
+        //Test if exception occurs from length
         assertThrows(IllegalArgumentException.class, () -> {
             ChatGPT.generateText(longPrompt, 5);
         });
@@ -32,14 +34,15 @@ public class ChatGPTTest {
 
     @Test
     public void testAPIEndpointWithLargeMaxTokens() throws Exception {
-        // Arrange
+        //Create prompt
         String prompt = "What is the meaning of life?";
+        //Allot large number of tokens
         int maxTokens = 2048;
         
-        // Act
+        //Generate response from ChatGPT API
         String generatedText = ChatGPT.generateText(prompt, maxTokens);
         
-        // Assert
+        //Test if response was received from API
         Assertions.assertNotNull(generatedText);
         Assertions.assertTrue(generatedText.length() > 0);
     }

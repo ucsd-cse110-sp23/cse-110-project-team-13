@@ -1,5 +1,6 @@
-package com.example.chatgpt;
+//Code adapted from CSE 110 Lab
 
+package com.example.chatgpt;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
