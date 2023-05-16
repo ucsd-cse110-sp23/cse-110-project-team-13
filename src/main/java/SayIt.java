@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,15 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.DefaultListModel;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.html.ListView;
 //required for icons if needed
 import javax.swing.Box;
 import javax.swing.Icon;
@@ -115,6 +110,8 @@ class Body extends JPanel {
   public JPanel history; //used to be private
   public DefaultListModel<String> model;
   public boolean micOpen;
+  public ArrayList<Question> questions;
+  public Recording recording;
 
   //Scroll Panes for history 
   public JScrollPane scrollHistory;
@@ -123,6 +120,8 @@ class Body extends JPanel {
     prompt = new JPanel();
     history = new JPanel();
     micOpen = false;
+    questions = new ArrayList<Question>();
+    recording = new Recording();
 
     // Set the layout manager of this JPanel to GridBagLayout
     this.setLayout(new GridBagLayout());
@@ -196,6 +195,7 @@ class Body extends JPanel {
         history.remove(c); // remove the component
       }
     }
+    questions.clear();
   }
   
 
@@ -208,11 +208,7 @@ class Body extends JPanel {
       BufferedReader buffer = new BufferedReader(reader);
       String line = "";
 
-      while (line != null){
-        line = buffer.readLine();
-        if (line == null) {
-          break; 
-        }
+      while ((line = buffer.readLine()) != null){
         Question question = new Question();
         question.taskName.setText(line);
         line = buffer.readLine();
@@ -244,6 +240,7 @@ class Body extends JPanel {
         @Override
         public void mousePressed(MouseEvent e){
           history.remove(newQuestion);
+          questions.remove(newQuestion);
           repaint(); 
           revalidate(); 
         }
@@ -264,6 +261,7 @@ class Body extends JPanel {
     );
 
     history.add(newQuestion);
+    questions.add(newQuestion);
     model.addElement(generatedText);
     this.revalidate();
   }
@@ -271,16 +269,17 @@ class Body extends JPanel {
   public void saveQuestions() {
     try {
       FileWriter writer = new FileWriter("questions.txt");
-      Component[] listItems = history.getComponents();
 
-      for (int i = 0; i < listItems.length; i++) {
-        if (listItems[i] instanceof Question) {
-          writer.write(((Question) listItems[i]).taskName.getText());
-          writer.write("\n");
-          writer.write(((Question) listItems[i]).answer);
-          writer.write("\n");
-          writer.flush();
-        }
+      for (int i = 0; i < questions.size(); i++) {
+        String question = questions.get(i).taskName.getText();
+        String QA = questions.get(i).answer;
+        question = question.replace("\n", "");
+        QA = QA.replace("\n", "");
+        writer.write(question);
+        writer.write('\n');
+        writer.write(QA);
+        writer.write('\n');
+        writer.flush();
       }
       writer.close();
     }
@@ -393,16 +392,16 @@ class AppFrame extends JFrame {
       new MouseAdapter() {
         @override
         public void mousePressed(MouseEvent e) {
-          Recording recording = new Recording();
           if (list.micOpen == false){
-            recording.openMicrophone();
+            list.recording.openMicrophone();
             list.micOpen = true;
           }
           else{
-            recording.closeMicrophone();
+            list.recording.closeMicrophone();
             list.micOpen = false;
             try {
               String transcript = TranscribeAudio.transcribeAudio("recording.wav");
+              list.model.clear();
               list.newQuestion(transcript);
             }
             catch (IOException | InterruptedException e2){
@@ -437,6 +436,7 @@ class AppFrame extends JFrame {
           for (int i = 0; i  < questionList.size(); i++) {
             Question newQuestion = questionList.get(i);
             list.history.add(newQuestion); 
+            list.questions.add(newQuestion);
 
             //Delete question from history
             JButton doneButton = newQuestion.getDone(); 
@@ -445,6 +445,7 @@ class AppFrame extends JFrame {
                 @override
                 public void mousePressed(MouseEvent e2){
                   list.history.remove(newQuestion);
+                  list.questions.remove(newQuestion);
                   list.repaint(); 
                   revalidate(); 
                 }
