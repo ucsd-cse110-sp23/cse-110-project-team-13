@@ -76,7 +76,7 @@ public class Body extends JPanel {
   }
 
   //removes question(s) from question history 
-  public void removeQuestionHistory() {
+  public void clearHistory() {
     for (Component c : history.getComponents()) {
       if (c instanceof Question) {
         history.remove(c); // remove the component

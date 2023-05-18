@@ -126,7 +126,6 @@ class Footer extends JPanel {
 }
 
 class Header extends JPanel {
-
   Color backgroundColor = new Color(240, 248, 255);
 
   Header() {
@@ -144,7 +143,7 @@ class AppFrame extends JFrame {
 
   private Header header;
   private Footer footer;
-  private Body list;
+  private Body body;
 
   private JButton addButton;
   private JButton clearButton;
@@ -158,11 +157,11 @@ class AppFrame extends JFrame {
 
     header = new Header();
     footer = new Footer();
-    list = new Body();
+    body = new Body();
 
     this.add(header, BorderLayout.NORTH); // Add title bar on top of the screen
     this.add(footer, BorderLayout.SOUTH); // Add footer on bottom of the screen
-    this.add(list, BorderLayout.CENTER); // Add list in middle of footer and title
+    this.add(body, BorderLayout.CENTER); // Add body in middle of footer and title
 
     addButton = footer.getAddButton();
     clearButton = footer.getClearButton();
@@ -179,7 +178,7 @@ class AppFrame extends JFrame {
         @Override
         public void mousePressed(MouseEvent e) {
           try {
-            list.newQuestion();
+            body.newQuestion();
           }
           catch (IOException | InterruptedException e2){
             e2.getStackTrace();
@@ -193,7 +192,7 @@ class AppFrame extends JFrame {
       new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
-          list.removeQuestionHistory();
+          body.clearHistory();
         }
       }
     );
@@ -205,11 +204,11 @@ class AppFrame extends JFrame {
         @Override
         public void mousePressed(MouseEvent e){
           ArrayList<Question> questionList = new ArrayList<Question>();
-          questionList = list.loadQuestions();
+          questionList = body.loadQuestions();
           for (int i = 0; i  < questionList.size(); i++) {
             Question newQuestion = questionList.get(i);
-            list.history.add(newQuestion); 
-            list.questions.add(newQuestion);
+            body.history.add(newQuestion); 
+            body.questions.add(newQuestion);
 
             //Delete question from history
             JButton doneButton = newQuestion.getDone(); 
@@ -217,9 +216,9 @@ class AppFrame extends JFrame {
               new MouseAdapter(){
                 @Override
                 public void mousePressed(MouseEvent e2){
-                  list.history.remove(newQuestion);
-                  list.questions.remove(newQuestion);
-                  list.repaint(); 
+                  body.history.remove(newQuestion);
+                  body.questions.remove(newQuestion);
+                  body.repaint(); 
                   revalidate(); 
                 }
               }
@@ -228,9 +227,9 @@ class AppFrame extends JFrame {
               new MouseAdapter(){
                 @Override
                 public void mousePressed(MouseEvent e){
-                  list.model.clear();
-                  list.model.addElement(newQuestion.qName.getText());
-                  list.model.addElement(newQuestion.answer);
+                  body.model.clear();
+                  body.model.addElement(newQuestion.qName.getText());
+                  body.model.addElement(newQuestion.answer);
                 }
               }
             );
@@ -243,7 +242,7 @@ class AppFrame extends JFrame {
       new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e){
-          list.saveQuestions();
+          body.saveQuestions();
         }
       }
     );
@@ -251,7 +250,6 @@ class AppFrame extends JFrame {
 }
 
 public class SayIt {
-
   public static void main(String args[]) {
     new AppFrame(); // Create the frame
   }
