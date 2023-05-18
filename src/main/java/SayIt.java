@@ -32,7 +32,6 @@ import javax.swing.ImageIcon;
 
 //required for scrolling
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 class Question extends JPanel {
 
@@ -44,15 +43,12 @@ class Question extends JPanel {
   Color gray = new Color(218, 229, 234);
   Color green = new Color(188, 226, 158);
 
-  private boolean markedDone;
-
   Question() {
     this.setPreferredSize(new Dimension(400, 20)); // set size of task
     this.setBackground(gray); // set background color of task
 
     this.setLayout(new BorderLayout()); // set layout of task
 
-    markedDone = false;
     answer = "";
 
     index = new JLabel(""); // create index label
@@ -74,32 +70,8 @@ class Question extends JPanel {
     this.add(doneButton, BorderLayout.EAST);
   }
 
-  //Methods from Lab 5 used for Project (may be removed)
-  public void changeIndex(int num) {
-    this.index.setText(num + ""); // num to String
-    this.revalidate(); // refresh
-  }
-
   public JButton getDone() {
     return doneButton;
-  }
-
-  public boolean getState() {
-    return markedDone;
-  }
-
-  public void changeState() {
-    if (markedDone == true) {
-      this.setBackground(gray);
-      taskName.setBackground(gray);
-      markedDone = false;
-    }
-    else {
-      this.setBackground(green);
-      taskName.setBackground(green);
-      markedDone = true;
-    }
-    revalidate();
   }
 }
 
@@ -176,18 +148,6 @@ class Body extends JPanel {
     this.setBackground(backgroundColor);
   }
 
-  //Methods from Lab 5 used for Project (may be removed)
-  //updates number in question history
-  public void updateNumbers() {
-    Component[] listItems = this.getComponents();
-
-    for (int i = 0; i < listItems.length; i++) {
-      if (listItems[i] instanceof Question) {
-        ((Question) listItems[i]).changeIndex(i + 1);
-      }
-    }
-  }
-
   //removes question(s) from question history 
   public void removeQuestionHistory() {
     for (Component c : history.getComponents()) {
@@ -219,7 +179,6 @@ class Body extends JPanel {
       buffer.close();
       reader.close();
 
-      this.updateNumbers();
       this.revalidate();
     }
     catch(Exception e){
@@ -390,7 +349,7 @@ class AppFrame extends JFrame {
   public void addListeners() {
     addButton.addMouseListener(
       new MouseAdapter() {
-        @override
+        @Override
         public void mousePressed(MouseEvent e) {
           if (list.micOpen == false){
             list.recording.openMicrophone();
@@ -415,7 +374,7 @@ class AppFrame extends JFrame {
     //clear all questions from history
     clearButton.addMouseListener(
       new MouseAdapter() {
-        @override
+        @Override
         public void mousePressed(MouseEvent e) {
           list.removeQuestionHistory();
           list.model.clear();
@@ -429,7 +388,7 @@ class AppFrame extends JFrame {
     //load previous questions
     loadButton.addMouseListener(
       new MouseAdapter() {
-        @override
+        @Override
         public void mousePressed(MouseEvent e){
           ArrayList<Question> questionList = new ArrayList<Question>();
           questionList = list.loadQuestions();
@@ -442,7 +401,7 @@ class AppFrame extends JFrame {
             JButton doneButton = newQuestion.getDone(); 
             doneButton.addMouseListener(
               new MouseAdapter(){
-                @override
+                @Override
                 public void mousePressed(MouseEvent e2){
                   list.history.remove(newQuestion);
                   list.questions.remove(newQuestion);
@@ -468,7 +427,7 @@ class AppFrame extends JFrame {
 
     saveButton.addMouseListener(
       new MouseAdapter() {
-        @override
+        @Override
         public void mousePressed(MouseEvent e){
           list.saveQuestions();
         }
@@ -506,7 +465,4 @@ public class SayIt {
   public static void main(String args[]) {
     new AppFrame(); // Create the frame
   }
-}
-
-@interface override {
 }
