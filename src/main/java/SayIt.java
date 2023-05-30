@@ -83,6 +83,7 @@ class Body extends JPanel {
   public DefaultListModel<String> model;
   public boolean micOpen;
   public ArrayList<Question> questions;
+  public Question currQuestion;
   public Recording recording;
 
   //Scroll Panes for history 
@@ -215,6 +216,7 @@ class Body extends JPanel {
           model.clear();
           model.addElement(newQuestion.taskName.getText());
           model.addElement(newQuestion.answer);
+          currQuestion = newQuestion;
         }
       }
     );
@@ -222,6 +224,7 @@ class Body extends JPanel {
     history.add(newQuestion);
     questions.add(newQuestion);
     model.addElement(generatedText);
+    currQuestion = newQuestion;
     this.revalidate();
   }
 
@@ -365,6 +368,8 @@ class AppFrame extends JFrame {
                 list.newQuestion(transcript.substring(10));
               }
               else if (transcript.toLowerCase() == "delete prompt") {
+                list.history.remove(list.currQuestion);
+                list.questions.remove(list.currQuestion);
                 repaint();
                 revalidate();
               }
