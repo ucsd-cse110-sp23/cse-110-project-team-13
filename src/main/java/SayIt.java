@@ -360,8 +360,20 @@ class AppFrame extends JFrame {
             list.micOpen = false;
             try {
               String transcript = TranscribeAudio.transcribeAudio("recording.wav");
-              list.model.clear();
-              list.newQuestion(transcript);
+              if (transcript.length() >= 10 && transcript.substring(0, 10).toLowerCase() == "question.") {
+                list.model.clear();
+                list.newQuestion(transcript.substring(10));
+              }
+              else if (transcript.toLowerCase() == "delete prompt") {
+                repaint();
+                revalidate();
+              }
+              else if (transcript.toLowerCase() == "clear all") {
+                list.removeQuestionHistory();
+                list.model.clear();
+                repaint(); 
+                revalidate();
+              }
             }
             catch (IOException | InterruptedException e2){
               System.out.println("Error");
