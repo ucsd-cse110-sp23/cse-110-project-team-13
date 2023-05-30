@@ -1,5 +1,3 @@
-package mongodb;
-
 import static com.mongodb.client.model.Filters.eq;
 
 import org.bson.Document;

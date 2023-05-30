@@ -1,5 +1,3 @@
-package mongodb;
-
 import com.mongodb.client.*;
 import org.bson.Document;
 
