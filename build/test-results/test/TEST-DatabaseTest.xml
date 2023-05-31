@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="DatabaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-05-31T08:31:24" hostname="Leyis-MacBook-Pro.local" time="4.19">
+  <properties/>
+  <testcase name="testBasicCRUD()" classname="DatabaseTest" time="4.19"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[May 31, 2023 1:31:24 AM com.mongodb.internal.diagnostics.logging.Loggers shouldUseSLF4J
+WARNING: SLF4J not found on the classpath.  Logging is disabled for the 'org.mongodb.driver' component
+]]></system-err>
+</testsuite>
