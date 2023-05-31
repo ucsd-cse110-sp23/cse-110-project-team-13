@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ChatGPTTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-05-30T22:33:10" hostname="Leyis-MacBook-Pro.local" time="6.144">
+<testsuite name="ChatGPTTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-05-30T22:43:15" hostname="Zacharys-MacBook-Air.local" time="7.521">
   <properties/>
-  <testcase name="testAPIEndpointWithLongPrompt()" classname="ChatGPTTest" time="0.018"/>
-  <testcase name="testAPIEndpointWithLargeMaxTokens()" classname="ChatGPTTest" time="4.403"/>
-  <testcase name="testAPIEndpoint()" classname="ChatGPTTest" time="1.721"/>
+  <testcase name="testAPIEndpointWithLongPrompt()" classname="ChatGPTTest" time="0.008"/>
+  <testcase name="testAPIEndpointWithLargeMaxTokens()" classname="ChatGPTTest" time="6.086"/>
+  <testcase name="testAPIEndpoint()" classname="ChatGPTTest" time="1.426"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
