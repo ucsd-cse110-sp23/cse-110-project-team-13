@@ -251,6 +251,7 @@ class AppFrame extends JFrame {
 
 public class SayIt {
   public static void main(String args[]) {
-    new AppFrame(); // Create the frame
+    //Launches App by first Logging In
+    LoginFrame frame = new LoginFrame();
   }
-}
+} 
