@@ -180,8 +180,31 @@ class AppFrame extends JFrame {
           try {
             body.newQuestion();
           }
-          catch (IOException | InterruptedException e2){
-            e2.getStackTrace();
+          else{
+            list.recording.closeMicrophone();
+            list.micOpen = false;
+            try {
+              String transcript = TranscribeAudio.transcribeAudio("recording.wav");
+              if (transcript.length() >= 10 && transcript.substring(0, 10).toLowerCase() == "question.") {
+                list.model.clear();
+                list.newQuestion(transcript.substring(10));
+              }
+              else if (transcript.toLowerCase() == "delete prompt") {
+                list.history.remove(list.currQuestion);
+                list.questions.remove(list.currQuestion);
+                repaint();
+                revalidate();
+              }
+              else if (transcript.toLowerCase() == "clear all") {
+                list.removeQuestionHistory();
+                list.model.clear();
+                repaint(); 
+                revalidate();
+              }
+            }
+            catch (IOException | InterruptedException e2){
+              System.out.println("Error");
+            }
           }
         }
       }

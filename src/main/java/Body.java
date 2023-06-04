@@ -13,6 +13,7 @@ public class Body extends JPanel {
   public boolean micOpen;
   public ArrayList<Question> questions;
   public Recording recording;
+  public Question currQuestion;
   private JScrollPane scrollHistory;
 
   Body() {
@@ -156,6 +157,7 @@ public class Body extends JPanel {
               model.clear();
               model.addElement(newQuestion.qName.getText());
               model.addElement(newQuestion.answer);
+              currQuestion = newQuestion;
             }
           }
         );
@@ -163,7 +165,10 @@ public class Body extends JPanel {
         history.add(newQuestion);
         questions.add(newQuestion);
         model.addElement(generatedText);
+        currQuestion = newQuestion;
+
         this.revalidate();
+
       }
       catch (IOException | InterruptedException e){
         e.getStackTrace();

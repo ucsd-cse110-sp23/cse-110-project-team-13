@@ -2,7 +2,11 @@ name: Tests
 
 on:
   push:
+<<<<<<< HEAD
+    branches: [ Voice-Commands ]
+=======
     branches: [ Database ]
+>>>>>>> main
 
 jobs:
   build:
