@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MockRecorderTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-05-15T18:43:42" hostname="LAPTOP-PHAURQUR" time="0.043">
+<testsuite name="MockRecorderTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-05-31T08:31:28" hostname="Leyis-MacBook-Pro.local" time="0.007">
   <properties/>
-  <testcase name="testOpenMicrophone" classname="MockRecorderTest" time="0.022"/>
+  <testcase name="testOpenMicrophone" classname="MockRecorderTest" time="0.004"/>
   <testcase name="MockAudioSystem" classname="MockRecorderTest" time="0.001"/>
   <testcase name="MockAudioInputStreamTest" classname="MockRecorderTest" time="0.0"/>
-  <testcase name="MockTargetDataLineOpen" classname="MockRecorderTest" time="0.001"/>
-  <testcase name="MockTargetDataLineStop" classname="MockRecorderTest" time="0.001"/>
-  <testcase name="MockTargetDataLineClose" classname="MockRecorderTest" time="0.001"/>
+  <testcase name="MockTargetDataLineOpen" classname="MockRecorderTest" time="0.0"/>
+  <testcase name="MockTargetDataLineStop" classname="MockRecorderTest" time="0.0"/>
+  <testcase name="MockTargetDataLineClose" classname="MockRecorderTest" time="0.0"/>
   <testcase name="MockTargetDataLineStart" classname="MockRecorderTest" time="0.0"/>
-  <testcase name="testCloseMicrophone" classname="MockRecorderTest" time="0.004"/>
+  <testcase name="testCloseMicrophone" classname="MockRecorderTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

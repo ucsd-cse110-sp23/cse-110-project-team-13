@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="VoiceRecognitionTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-05-15T18:43:42" hostname="LAPTOP-PHAURQUR" time="0.005">
+<testsuite name="VoiceRecognitionTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-05-31T08:31:28" hostname="Leyis-MacBook-Pro.local" time="0.001">
   <properties/>
-  <testcase name="testVoiceRecognition" classname="VoiceRecognitionTests" time="0.002"/>
-  <testcase name="testVoiceRecognitionSilence" classname="VoiceRecognitionTests" time="0.002"/>
+  <testcase name="testVoiceRecognition" classname="VoiceRecognitionTests" time="0.0"/>
+  <testcase name="testVoiceRecognitionSilence" classname="VoiceRecognitionTests" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
