@@ -166,7 +166,9 @@ public class Body extends JPanel {
         questions.add(newQuestion);
         model.addElement(generatedText);
         currQuestion = newQuestion;
+
         this.revalidate();
+
       }
       catch (IOException | InterruptedException e){
         e.getStackTrace();
