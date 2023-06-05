@@ -1,41 +1,8 @@
-// import java.awt.BorderLayout;
-// import java.awt.Color;
-// import java.awt.Component;
-// import java.awt.Dimension;
-// import java.awt.Font;
-// import java.awt.GridBagConstraints;
-// import java.awt.GridBagLayout;
-// import java.awt.GridLayout;
-// import java.awt.event.MouseAdapter;
-// import java.awt.event.MouseEvent;
-// import java.io.BufferedReader;
-// import java.io.FileReader;
-// import java.io.FileWriter;
-// import java.io.IOException;
-// import java.util.ArrayList;
-// import javax.swing.BorderFactory;
-// import javax.swing.JButton;
-// import javax.swing.JFrame;
-// import javax.swing.JLabel;
-// import javax.swing.JList;
-// import javax.swing.JPanel;
-// import javax.swing.JTextField;
-// import javax.swing.SwingConstants;
-// import javax.swing.DefaultListModel;
-// import javax.swing.ListCellRenderer;
-// import javax.swing.border.Border;
-// import javax.swing.border.EmptyBorder;
-// import javax.swing.Box;
-// import javax.swing.Icon;
-// import javax.swing.ImageIcon;
-// import javax.swing.JScrollPane;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.io.*;
-import java.util.ArrayList;
 
 class Question extends JPanel {
 
@@ -80,8 +47,6 @@ class Footer extends JPanel {
 
   JButton addButton;
   JButton clearButton;
-  JButton loadButton;
-  JButton saveButton;
 
   Color backgroundColor = new Color(240, 248, 255);
   Border emptyBorder = BorderFactory.createEmptyBorder();
@@ -99,13 +64,6 @@ class Footer extends JPanel {
     clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
     this.add(clearButton); // add to footer
 
-    loadButton = new JButton("Load Questions");
-    loadButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
-    this.add(loadButton);
-
-    saveButton = new JButton("Save Questions");
-    saveButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
-    this.add(saveButton);
   }
 
   public JButton getAddButton() {
@@ -114,14 +72,6 @@ class Footer extends JPanel {
 
   public JButton getClearButton() {
     return clearButton;
-  }
-
-  public JButton getLoadButton() {
-    return loadButton;
-  }
-
-  public JButton getSaveButton() {
-    return saveButton;
   }
 }
 
@@ -147,8 +97,6 @@ class AppFrame extends JFrame {
 
   private JButton addButton;
   private JButton clearButton;
-  private JButton loadButton;
-  private JButton saveButton;
 
   AppFrame() {
     this.setSize(400, 600); // 400 width and 600 height
@@ -165,8 +113,6 @@ class AppFrame extends JFrame {
 
     addButton = footer.getAddButton();
     clearButton = footer.getClearButton();
-    loadButton = footer.getLoadButton();
-    saveButton = footer.getSaveButton();
 
     addListeners();
     this.revalidate();
@@ -178,33 +124,10 @@ class AppFrame extends JFrame {
         @Override
         public void mousePressed(MouseEvent e) {
           try {
-            body.newQuestion();
+            body.voiceCommands();
           }
-          else{
-            list.recording.closeMicrophone();
-            list.micOpen = false;
-            try {
-              String transcript = TranscribeAudio.transcribeAudio("recording.wav");
-              if (transcript.length() >= 10 && transcript.substring(0, 10).toLowerCase() == "question.") {
-                list.model.clear();
-                list.newQuestion(transcript.substring(10));
-              }
-              else if (transcript.toLowerCase() == "delete prompt") {
-                list.history.remove(list.currQuestion);
-                list.questions.remove(list.currQuestion);
-                repaint();
-                revalidate();
-              }
-              else if (transcript.toLowerCase() == "clear all") {
-                list.removeQuestionHistory();
-                list.model.clear();
-                repaint(); 
-                revalidate();
-              }
-            }
-            catch (IOException | InterruptedException e2){
-              System.out.println("Error");
-            }
+          catch (IOException | InterruptedException e2){
+            System.out.println("Error");
           }
         }
       }
@@ -216,56 +139,6 @@ class AppFrame extends JFrame {
         @Override
         public void mousePressed(MouseEvent e) {
           body.clearHistory();
-        }
-      }
-    );
-
-
-    //load previous questions
-    loadButton.addMouseListener(
-      new MouseAdapter() {
-        @Override
-        public void mousePressed(MouseEvent e){
-          ArrayList<Question> questionList = new ArrayList<Question>();
-          questionList = body.loadQuestions();
-          for (int i = 0; i  < questionList.size(); i++) {
-            Question newQuestion = questionList.get(i);
-            body.history.add(newQuestion); 
-            body.questions.add(newQuestion);
-
-            //Delete question from history
-            JButton doneButton = newQuestion.getDone(); 
-            doneButton.addMouseListener(
-              new MouseAdapter(){
-                @Override
-                public void mousePressed(MouseEvent e2){
-                  body.history.remove(newQuestion);
-                  body.questions.remove(newQuestion);
-                  body.repaint(); 
-                  revalidate(); 
-                }
-              }
-            );
-            newQuestion.qName.addMouseListener(
-              new MouseAdapter(){
-                @Override
-                public void mousePressed(MouseEvent e){
-                  body.model.clear();
-                  body.model.addElement(newQuestion.qName.getText());
-                  body.model.addElement(newQuestion.answer);
-                }
-              }
-            );
-          }
-        }
-      }
-    );
-
-    saveButton.addMouseListener(
-      new MouseAdapter() {
-        @Override
-        public void mousePressed(MouseEvent e){
-          body.saveQuestions();
         }
       }
     );

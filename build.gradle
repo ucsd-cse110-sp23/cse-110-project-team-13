@@ -32,5 +32,5 @@ test {
 }
 
 application {
-    mainClass = "QuickStart"
+    mainClass = "SayIt"
 }

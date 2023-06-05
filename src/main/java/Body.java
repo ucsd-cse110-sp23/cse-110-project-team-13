@@ -119,7 +119,7 @@ public class Body extends JPanel {
     return questionList; 
   } 
 
-  public void newQuestion() throws IOException, InterruptedException{
+  public void voiceCommands() throws IOException, InterruptedException{
     if (micOpen == false){
       recording.openMicrophone();
       micOpen = true;
@@ -128,52 +128,74 @@ public class Body extends JPanel {
       recording.closeMicrophone();
       micOpen = false;
       try {
-        String question = TranscribeAudio.transcribeAudio("recording.wav");
-        model.clear();
-        String generatedText = "";
-        model.addElement(question);
-        Question newQuestion = new Question();
-        newQuestion.qName.setText(question);
-        JButton doneButton = newQuestion.getDone(); 
-        doneButton.addMouseListener(
-          new MouseAdapter(){
-            @Override
-            public void mousePressed(MouseEvent e){
-              history.remove(newQuestion);
-              questions.remove(newQuestion);
-              repaint(); 
-              revalidate(); 
-            }
-          }
-        );
+        String transcript = TranscribeAudio.transcribeAudio("recording.wav");
+        if (transcript.length() >= 10 && transcript.substring(0, 10).toLowerCase() == "question.") {
+          model.clear();
+          newQuestion(transcript.substring(10));
+        }
+        else if (transcript.toLowerCase() == "delete prompt") {
+          history.remove(currQuestion);
+          questions.remove(currQuestion);
+          repaint();
+          revalidate();
+        }
+        else if (transcript.toLowerCase() == "clear all") {
+          clearHistory();
+          model.clear();
+          repaint(); 
+          revalidate();
+        }
 
-        generatedText = ChatGPT.generateText(question, 2048);
-        generatedText = generatedText.replace("\n", "");
-        newQuestion.answer = generatedText;
-        newQuestion.qName.addMouseListener(
-          new MouseAdapter(){
-            @Override
-            public void mousePressed(MouseEvent e){
-              model.clear();
-              model.addElement(newQuestion.qName.getText());
-              model.addElement(newQuestion.answer);
-              currQuestion = newQuestion;
-            }
-          }
-        );
-
-        history.add(newQuestion);
-        questions.add(newQuestion);
-        model.addElement(generatedText);
-        currQuestion = newQuestion;
-
-        this.revalidate();
+        
 
       }
       catch (IOException | InterruptedException e){
         e.getStackTrace();
       }
     }
+  }
+
+  public void newQuestion(String transcript) throws IOException, InterruptedException{
+    String question = transcript;
+    model.clear();
+    String generatedText = "";
+    model.addElement(question);
+    Question newQuestion = new Question();
+    newQuestion.qName.setText(question);
+    JButton doneButton = newQuestion.getDone(); 
+    doneButton.addMouseListener(
+      new MouseAdapter(){
+        @Override
+        public void mousePressed(MouseEvent e){
+          history.remove(newQuestion);
+          questions.remove(newQuestion);
+          repaint(); 
+          revalidate(); 
+        }
+      }
+    );
+
+    generatedText = ChatGPT.generateText(question, 2048);
+    generatedText = generatedText.replace("\n", "");
+    newQuestion.answer = generatedText;
+    newQuestion.qName.addMouseListener(
+      new MouseAdapter(){
+        @Override
+        public void mousePressed(MouseEvent e){
+          model.clear();
+          model.addElement(newQuestion.qName.getText());
+          model.addElement(newQuestion.answer);
+          currQuestion = newQuestion;
+        }
+      }
+    );
+
+    history.add(newQuestion);
+    questions.add(newQuestion);
+    model.addElement(generatedText);
+    currQuestion = newQuestion;
+
+    this.revalidate();
   }
 
   public void saveQuestions() {
