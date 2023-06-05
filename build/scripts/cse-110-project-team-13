@@ -206,7 +206,7 @@ DEFAULT_JVM_OPTS=""
 
 set -- \
         -classpath "$CLASSPATH" \
-        QuickStart \
+        SayIt \
         "$@"
 
 # Stop when "xargs" is not available.

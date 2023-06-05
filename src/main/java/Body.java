@@ -195,6 +195,7 @@ public class Body extends JPanel {
     model.addElement(generatedText);
     currQuestion = newQuestion;
 
+    Create.addQuestionAndAnswer(question, generatedText);
     this.revalidate();
   }
 

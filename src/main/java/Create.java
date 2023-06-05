@@ -5,30 +5,20 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-
-import java.util.Random;
-
-
-import static java.util.Arrays.asList;
-
-
 public class Create {
-
     
+    private static final String uri = "mongodb://gll002:5XzFoHTsaDuKyO4o@ac-jp7sh2s-shard-00-00.ws94cg8.mongodb.net:27017,ac-jp7sh2s-shard-00-01.ws94cg8.mongodb.net:27017,ac-jp7sh2s-shard-00-02.ws94cg8.mongodb.net:27017/?ssl=true&replicaSet=atlas-12j7mx-shard-0&authSource=admin&retryWrites=true&w=majority";
 
-    public static void main(String[] args) {
-        String uri = "mongodb://gll002:5XzFoHTsaDuKyO4o@ac-jp7sh2s-shard-00-00.ws94cg8.mongodb.net:27017,ac-jp7sh2s-shard-00-01.ws94cg8.mongodb.net:27017,ac-jp7sh2s-shard-00-02.ws94cg8.mongodb.net:27017/?ssl=true&replicaSet=atlas-12j7mx-shard-0&authSource=admin&retryWrites=true&w=majority";
-        
+    public static void addQuestionAndAnswer(String question, String answer) {
         try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase sampleTrainingDB = mongoClient.getDatabase("sample_training");
-            MongoCollection<Document> usersCollection = sampleTrainingDB.getCollection("users");
+            MongoDatabase database = mongoClient.getDatabase("sayit_data");
+            MongoCollection<Document> chatDataCollection = database.getCollection("user_chat_data");
 
-            Document user = new Document("_id", new ObjectId());
-            user.append("username", "testUser")
-                .append("password", "testPassword");
+            Document chatData = new Document("_id", new ObjectId());
+            chatData.append("Question", question)
+                    .append("Response", answer);
 
-            usersCollection.insertOne(user);
+            chatDataCollection.insertOne(chatData);
         }
     }
 }
-
