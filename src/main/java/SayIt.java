@@ -46,7 +46,6 @@ class Question extends JPanel {
 class Footer extends JPanel {
 
   JButton addButton;
-  JButton clearButton;
 
   Color backgroundColor = new Color(240, 248, 255);
   Border emptyBorder = BorderFactory.createEmptyBorder();
@@ -59,19 +58,10 @@ class Footer extends JPanel {
     addButton = new JButton("New Question"); // add task button
     addButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
     this.add(addButton); // add to footer
-
-    clearButton = new JButton("Clear All"); // clear button
-    clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
-    this.add(clearButton); // add to footer
-
   }
 
   public JButton getAddButton() {
     return addButton;
-  }
-
-  public JButton getClearButton() {
-    return clearButton;
   }
 }
 
@@ -98,21 +88,20 @@ class AppFrame extends JFrame {
   private JButton addButton;
   private JButton clearButton;
 
-  AppFrame() {
+  AppFrame(String username) {
     this.setSize(400, 600); // 400 width and 600 height
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close on exit
     this.setVisible(true); // Make visible
 
     header = new Header();
     footer = new Footer();
-    body = new Body();
+    body = new Body(username);
 
     this.add(header, BorderLayout.NORTH); // Add title bar on top of the screen
     this.add(footer, BorderLayout.SOUTH); // Add footer on bottom of the screen
     this.add(body, BorderLayout.CENTER); // Add body in middle of footer and title
 
     addButton = footer.getAddButton();
-    clearButton = footer.getClearButton();
 
     addListeners();
     this.revalidate();

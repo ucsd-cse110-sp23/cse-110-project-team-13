@@ -16,7 +16,7 @@ public class Body extends JPanel {
   public Question currQuestion;
   private JScrollPane scrollHistory;
 
-  Body() {
+  Body(String username) {
     prompt = new JPanel();
     history = new JPanel();
     micOpen = false;
@@ -74,6 +74,8 @@ public class Body extends JPanel {
   
     this.setPreferredSize(new Dimension(400, 960));
     this.setBackground(backgroundColor);
+
+    loadQuestions();
   }
 
   //removes question(s) from question history 
@@ -90,33 +92,9 @@ public class Body extends JPanel {
   }
   
 
-  //Loads Previous Questions from Text File
+  //Loads Previous Questions from Database
   public ArrayList<Question> loadQuestions() {
-    ArrayList<Question> questionList = new ArrayList<Question>();
 
-    try{
-      FileReader reader = new FileReader("questions.txt");
-      BufferedReader buffer = new BufferedReader(reader);
-      String line = "";
-
-      while ((line = buffer.readLine()) != null){
-        Question question = new Question();
-        question.qName.setText(line);
-        line = buffer.readLine();
-        question.answer = line;
-        questionList.add(question);
-      }
-
-      buffer.close();
-      reader.close();
-
-      this.revalidate();
-    }
-    catch(Exception e){
-      e.getStackTrace();
-    }
-
-    return questionList; 
   } 
 
   public void voiceCommands() throws IOException, InterruptedException{
@@ -145,9 +123,6 @@ public class Body extends JPanel {
           repaint(); 
           revalidate();
         }
-
-        
-
       }
       catch (IOException | InterruptedException e){
         e.getStackTrace();
@@ -198,25 +173,6 @@ public class Body extends JPanel {
     Create.addQuestionAndAnswer(question, generatedText);
     this.revalidate();
   }
-
-  public void saveQuestions() {
-    try {
-      FileWriter writer = new FileWriter("questions.txt");
-
-      for (int i = 0; i < questions.size(); i++) {
-        writer.write(questions.get(i).qName.getText());
-        writer.write('\n');
-        writer.write(questions.get(i).answer);
-        writer.write('\n');
-        writer.flush();
-      }
-      writer.close();
-    }
-    catch (Exception e){
-      e.getStackTrace();
-    }
-  }
-
 }
 
 class AlternatingRowRenderer extends JLabel implements ListCellRenderer<String> {

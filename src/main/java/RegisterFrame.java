@@ -118,7 +118,7 @@ public class RegisterFrame extends JFrame {
 
                     //FIX ME: Add code for registering account to database
 
-                    new AppFrame();     //opens SayIt App after registering account
+                    new AppFrame(emailText);     //opens SayIt App after registering account
                     closeFrame();       //close screen and return back to login page
 
                 }

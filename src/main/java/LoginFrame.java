@@ -7,7 +7,6 @@ https://www.tutorialsfield.com/login-form-in-java-swing-with-source-code/
 
 //importing packages
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -114,7 +113,7 @@ public class LoginFrame extends JFrame {
 
                 //check the password and email is correct
                 if (userText.equalsIgnoreCase("Test1") && pwdText.equalsIgnoreCase("12345")) {
-                    new AppFrame(); //open SayIt app
+                    new AppFrame(userText); //open SayIt app
                     closeFrame();   //close LoginFrame
                 }
             }
