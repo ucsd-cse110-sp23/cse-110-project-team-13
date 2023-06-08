@@ -109,12 +109,15 @@ public class Body extends JPanel {
       recording.closeMicrophone();
       micOpen = false;
       try {
-        String transcript = TranscribeAudio.transcribeAudio("recording.wav");
+        String transcript = TranscribeAudio.transcribeAudio("recording.wav").strip();
         if (transcript.length() >= 10 && transcript.substring(0, 7).toLowerCase() == "question") {
           newQuestion(transcript.substring(10));
         }
-        else if (transcript.length() >= 10 && transcript.substring(0, 7).toLowerCase() == "create email") {
+        else if (transcript.length() >= 20 && transcript.substring(0, 11).toLowerCase() == "create email") {
           newQuestion(transcript);
+        }
+        else if (transcript.length() >= 15 && transcript.substring(0, 9).toLowerCase() == "send email") {
+          
         }
         else if (transcript.toLowerCase() == "delete prompt") {
           history.remove(currQuestion);
@@ -153,7 +156,7 @@ public class Body extends JPanel {
     generatedText = ChatGPT.generateText(question, 2048);
     generatedText = generatedText.replace("\n", "");
     newQuestion.answer = generatedText;
-    
+
     newQuestion.qName.addMouseListener(
       new MouseAdapter(){
         @Override

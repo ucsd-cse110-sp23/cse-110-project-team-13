@@ -83,4 +83,20 @@ public class Read {
         }
       }
     }
+
+    public static String[] sendEmailInfo(String email) {
+      String[] info = new String[7];
+      try (MongoClient mongoClient = MongoClients.create(uri)) {
+        MongoDatabase sampleTrainingDB = mongoClient.getDatabase("sayit_data");
+        MongoCollection<Document> userLoginDataCollection = sampleTrainingDB.getCollection("user_login_data");
+        Document user = userLoginDataCollection.find(eq("appEmail", email)).first();
+
+        if (user.getString("firstName") == null){
+          return null;
+        }
+        else {
+          return null;
+        }
+      }
+    }
 }
