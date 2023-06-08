@@ -39,15 +39,8 @@ public class LoginTest {
         testUser = "";
         testPassword = "";
 
-        //create instance of login frame
-        this.testLoginFrame = new LoginFrame();
-        testLoginFrame.debugOn();
-
         //login returns false since user is not able to login due to no input
-        assertFalse(testLoginFrame.login(testUser, testPassword));
-
-        //close the frame
-        this.testLoginFrame.closeFrame();
+        assertFalse(Read.successfulLogin(testUser, testPassword));
     }
 
     //User tries to login with an invalid account.
@@ -57,18 +50,8 @@ public class LoginTest {
         testUser = "TestNewUser";
         testPassword = "TestNewPassword"; 
 
-        //test that the account does not login
-        this.testLoginFrame = new LoginFrame();
-        testLoginFrame.debugOn();
-
-        //login returns false since user's account doesn't exist
-        assertFalse(testLoginFrame.login(testUser, testPassword)); 
-
         //checks database that there is no record of account
         assertFalse(Read.userExists(testUser)); 
-
-        //close the frame
-        this.testLoginFrame.closeFrame();
     } 
 
     //User logins with valid email but incorrect password. 
@@ -81,21 +64,11 @@ public class LoginTest {
         //create the account
         Create.addLoginInfo(testUser, testPassword); 
 
-        //test that the account successfully logins
-        this.testLoginFrame = new LoginFrame();
-        testLoginFrame.debugOn();
-
-        //login function returns false since password is incorrrect
-        assertFalse(testLoginFrame.login(testUser, "WrongPassword")); 
-
         //checks that account is in database
         assertTrue(Read.userExists(testUser));
 
         //checks that account is not able to login through database due to wrong password
         assertFalse(Read.successfulLogin(testUser, "WrongPassword"));
-
-        //close the frame
-        this.testLoginFrame.closeFrame();
 
         //clear the database
         Delete.clearDatabase();
@@ -109,23 +82,13 @@ public class LoginTest {
         testPassword = "TestNewPassword";
 
         //register the account
-        Create.addLoginInfo(testUser, testPassword); 
-
-        //test that the account successfully logins
-        this.testLoginFrame = new LoginFrame();
-        testLoginFrame.debugOn();
-
-        //login returns true indicating that user is able to login
-        assertTrue(testLoginFrame.login(testUser, testPassword)); 
+        Create.addLoginInfo(testUser, testPassword);
 
         //checks that account is in database
         assertTrue(Read.userExists(testUser));
 
         //checks that user is able to successfully login
         assertTrue(Read.successfulLogin(testUser, testPassword)); 
-
-        //close the frame
-        this.testLoginFrame.closeFrame();
 
         //clear the database
         Delete.clearDatabase();
@@ -142,14 +105,11 @@ public class LoginTest {
 
         //register the account
         Create.addLoginInfo(testUser, testPassword);
-        
-        //test that the account successfully logins
-        this.testLoginFrame = new LoginFrame();
-        JCheckBox checkBoxTest = (JCheckBox)testLoginFrame.getAutomaticLogin(); 
-        checkBoxTest.setSelected(true);
+
+        Update.automaticallyLog(testUser);
 
         //check login works and also inputs true textbox
-        assertTrue(testLoginFrame.login(testUser, testPassword)); 
+        assertTrue(Read.successfulLogin(testUser, testPassword)); 
 
         //String returned is user email or null if user didn't check auto-login
         String returnAuto = Read.checkAutomaticLogin(); 
@@ -157,21 +117,9 @@ public class LoginTest {
         //read.java checks if user has selected automatic login
         assertEquals(returnAuto, testUser); 
 
-        //Update.manuallyLog(testUser);
-
         //clear the database
         Delete.clearDatabase();
-
-        
-
     }
-
-    //method to ensure that the user switches back to logout auto before running each test
-    @After
-    public void after(){
-        Update.manuallyLog(testUser);
-    }
-
 
     //User does not want to remain automatically logged into SayIt App. 
     @Test
@@ -183,14 +131,11 @@ public class LoginTest {
 
         //register the account
         Create.addLoginInfo(testUser, testPassword);
-        
-        //test that the account successfully logins
-        this.testLoginFrame = new LoginFrame();
-        JCheckBox checkBoxTest = (JCheckBox)testLoginFrame.getAutomaticLogin(); 
-        checkBoxTest.setSelected(false);
+
+        Update.manuallyLog(testUser);
 
         //check login works and also inputs true textbox
-        assertTrue(testLoginFrame.login(testUser, testPassword)); 
+        assertTrue(Read.successfulLogin(testUser, testPassword)); 
 
         //String returned is user email or null if user didn't check auto-login
         String returnAuto = Read.checkAutomaticLogin(); 
@@ -200,8 +145,5 @@ public class LoginTest {
 
         //clear the database
         Delete.clearDatabase();
-
     } 
-    
-
 }

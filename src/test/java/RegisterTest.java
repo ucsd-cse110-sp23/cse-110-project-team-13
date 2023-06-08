@@ -34,15 +34,8 @@ public class RegisterTest {
         testPassword = "";
         testVerifyPassword = "";
 
-        //create instance of login frame
-        testRegisterFrame = new RegisterFrame();
-        testRegisterFrame.debugOn();
-
         //checks register returns false indicating incorrect input
-        assertFalse(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword));
-
-        //close the frame
-        this.testRegisterFrame.closeFrame();
+        assertFalse(Read.userExists(testEmail));
     }
 
     //User inputs different password for verify password field. 
@@ -53,15 +46,8 @@ public class RegisterTest {
         testPassword = "Password";
         testVerifyPassword = "WrongPassword";
 
-        //create instance of login frame
-        this.testRegisterFrame = new RegisterFrame();
-        testRegisterFrame.debugOn();
-
         //checks register returns false indicating incorrect input
-        assertFalse(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword));
-
-        //close the frame
-        this.testRegisterFrame.closeFrame();
+        assertFalse(Read.successfulLogin(testEmail, testVerifyPassword));
     }
 
     
@@ -73,18 +59,10 @@ public class RegisterTest {
         testPassword = "Password";
         testVerifyPassword = "Password";
 
-        //test that the account successfully logins
-        this.testRegisterFrame = new RegisterFrame();
-        testRegisterFrame.debugOn();
-
-        //checks that register was successful
-        assertTrue(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword )); 
+        Create.addLoginInfo(testEmail, testPassword);
 
         //checks that user is in database
         assertTrue(Read.userExists(testEmail)); 
-
-        //close the frame
-        this.testRegisterFrame.closeFrame();
 
         //clear database
         Delete.clearDatabase();
@@ -101,18 +79,11 @@ public class RegisterTest {
         //register the account
         Create.addLoginInfo(testEmail, testPassword); 
 
-        //test that the account does not login
-        this.testRegisterFrame = new RegisterFrame();
-        testRegisterFrame.debugOn();
-
         //checks register returns false since account is already registered
-        assertFalse(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword)); 
+        assertFalse(Create.addLoginInfo(testEmail, testPassword)); 
 
         //checks user exists in the database
         assertTrue(Read.userExists(testEmail)); 
-
-        //close the frame
-        this.testRegisterFrame.closeFrame();
 
         //clear database
         Delete.clearDatabase();

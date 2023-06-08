@@ -54,7 +54,6 @@ public class Update {
     public static void manuallyLog(String email){
       File file = new File("lastLogin.txt");
       file.delete();
-      new LoginFrame();
     }
 }
 

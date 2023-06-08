@@ -286,7 +286,7 @@ public class Body extends JPanel {
       return;
     }
     else {
-      // Send email logic
+      SendEmail.sendEmail(null, realEmail, transcript, realEmail);
     }
   }
 
