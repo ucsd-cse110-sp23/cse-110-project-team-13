@@ -118,8 +118,6 @@ public class LoginFrame extends JFrame {
             e.getStackTrace();
           }
         }
-        else {
-        }
         new AppFrame(userText);
         closeFrame();
         return true;

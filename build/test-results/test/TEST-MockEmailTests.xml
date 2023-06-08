@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="MockEmailTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-06-08T10:45:13" hostname="LAPTOP-PHAURQUR" time="0.008">
+  <properties/>
+  <testcase name="MimeTestGetters" classname="MockEmailTests" time="0.003"/>
+  <testcase name="sendEmailTest" classname="MockEmailTests" time="0.0"/>
+  <testcase name="authenticatorTest" classname="MockEmailTests" time="0.0"/>
+  <testcase name="transportTest" classname="MockEmailTests" time="0.0"/>
+  <testcase name="sessionTest" classname="MockEmailTests" time="0.001"/>
+  <testcase name="MimeTestSetters" classname="MockEmailTests" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

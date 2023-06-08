@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TranscriptionTests" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-06-08T07:39:14" hostname="LAPTOP-PHAURQUR" time="0.257">
+<testsuite name="TranscriptionTests" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-06-08T10:45:13" hostname="LAPTOP-PHAURQUR" time="0.213">
   <properties/>
-  <testcase name="testHandleResponseSuccess" classname="TranscriptionTests" time="0.0"/>
-  <testcase name="testTranscriptionSilence" classname="TranscriptionTests" time="0.0"/>
-  <testcase name="testCloseRequestBody" classname="TranscriptionTests" time="0.128"/>
-  <testcase name="testWriteFile" classname="TranscriptionTests" time="0.07"/>
-  <testcase name="testWriteParameter" classname="TranscriptionTests" time="0.053"/>
-  <testcase name="testSetupRequestHeader" classname="TranscriptionTests" time="0.002"/>
-  <testcase name="testTranscription" classname="TranscriptionTests" time="0.001"/>
+  <testcase name="testHandleResponseSuccess" classname="TranscriptionTests" time="0.001"/>
+  <testcase name="testTranscriptionSilence" classname="TranscriptionTests" time="0.001"/>
+  <testcase name="testCloseRequestBody" classname="TranscriptionTests" time="0.065"/>
+  <testcase name="testWriteFile" classname="TranscriptionTests" time="0.079"/>
+  <testcase name="testWriteParameter" classname="TranscriptionTests" time="0.059"/>
+  <testcase name="testSetupRequestHeader" classname="TranscriptionTests" time="0.001"/>
+  <testcase name="testTranscription" classname="TranscriptionTests" time="0.0"/>
   <testcase name="testSetupConnection" classname="TranscriptionTests" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[java.io.FileNotFoundException: \Users\Daniel\Documents\CSE 110\cse-110-project-team-13\src\test\java\TestFiles\Test.m4a (The system cannot find the path specified)

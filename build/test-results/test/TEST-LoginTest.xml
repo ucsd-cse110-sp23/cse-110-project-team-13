@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="LoginTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-06-08T07:38:43" hostname="LAPTOP-PHAURQUR" time="22.698">
+<testsuite name="LoginTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-06-08T10:44:59" hostname="LAPTOP-PHAURQUR" time="8.229">
   <properties/>
-  <testcase name="testValidEmail()" classname="LoginTest" time="4.752"/>
-  <testcase name="testWrongPassword()" classname="LoginTest" time="14.944"/>
-  <testcase name="testBlankFields()" classname="LoginTest" time="1.448"/>
-  <testcase name="testInvalidEmail()" classname="LoginTest" time="1.553"/>
+  <testcase name="testValidEmail()" classname="LoginTest" time="3.902"/>
+  <testcase name="testWrongPassword()" classname="LoginTest" time="2.8"/>
+  <testcase name="testBlankFields()" classname="LoginTest" time="0.77"/>
+  <testcase name="testInvalidEmail()" classname="LoginTest" time="0.755"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
