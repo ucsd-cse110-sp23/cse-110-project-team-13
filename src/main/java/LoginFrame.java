@@ -100,7 +100,7 @@ public class LoginFrame extends JFrame {
         container.add(registerButton);
     }
 
-    public void login(String userText, String pwdText){
+    public boolean login(String userText, String pwdText){
       if (Read.successfulLogin(userText, pwdText)){
         if (loginAutoButton.isSelected() == true) {
           Update.automaticallyLog(userText);
@@ -110,9 +110,11 @@ public class LoginFrame extends JFrame {
         }
         new AppFrame(userText);
         closeFrame();
+        return true;
       }
       else {
         JOptionPane.showMessageDialog(null, "Wrong email or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
+        return false;
       }
     }
 
