@@ -33,5 +33,5 @@ test {
 }
 
 application {
-    mainClass = "SayIt"
+    mainClass = "LoginFrame"
 }

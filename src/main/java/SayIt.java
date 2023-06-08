@@ -9,7 +9,7 @@ class Question extends JPanel {
   JLabel index;         //might be needed
   JTextField qName;  //text of the question
   String answer;
-  Boolean emailQuestion;
+  Boolean isEmail;
 
   Color gray = new Color(218, 229, 234);
 
@@ -18,7 +18,6 @@ class Question extends JPanel {
     this.setBackground(gray); // set background color of task
     this.setLayout(new BorderLayout()); // set layout of task
     answer = "";
-    emailQuestion = false;
 
     index = new JLabel(""); // create index label
     index.setPreferredSize(new Dimension(20, 20)); // set size of index label
@@ -31,11 +30,6 @@ class Question extends JPanel {
     qName.setEditable(false);
     this.add(qName, BorderLayout.CENTER);
   }
-}
-
-class User {
-  public String appEmail, appPassword, firstName, lastName, displayName, emailPassword, sendEmail;
-  public int SMTP, TLS;
 }
 
 class Footer extends JPanel {
@@ -62,6 +56,7 @@ class Footer extends JPanel {
 
 class Header extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
+  JButton logoutButton; //added logout button
 
   Header() {
     this.setPreferredSize(new Dimension(400, 60)); // Size of the header
@@ -71,6 +66,16 @@ class Header extends JPanel {
     titleText.setFont(new Font("Sans-serif", Font.BOLD, 20));
     titleText.setHorizontalAlignment(JLabel.CENTER); // Align the text to the center
     this.add(titleText); // Add the text to the header
+
+    //logoutbutton 
+    logoutButton = new JButton("Logout"); // add logout button
+    logoutButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
+    this.add(logoutButton); // add to header
+  }
+
+  //method to get logoutButton
+  public JButton getLogOutButton() {
+    return logoutButton; 
   }
 }
 
@@ -81,9 +86,12 @@ class AppFrame extends JFrame {
   private Body body;
 
   private JButton startButton;
-  private JButton clearButton;
+  //adding logoutButton
+  private JButton logoutButton; 
+  private String appEmail;
 
   AppFrame(String username) {
+    appEmail = username;
     this.setSize(400, 600); // 400 width and 600 height
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close on exit
     this.setVisible(true); // Make visible
@@ -97,6 +105,7 @@ class AppFrame extends JFrame {
     this.add(body, BorderLayout.CENTER); // Add body in middle of footer and title
 
     startButton = footer.getStartButton();
+    logoutButton = header.getLogOutButton();
 
     addListeners();
     this.revalidate();
@@ -117,27 +126,25 @@ class AppFrame extends JFrame {
       }
     );
 
-    //clear all questions from history
-    clearButton.addMouseListener(
+    logoutButton.addMouseListener(
       new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
-          body.clearHistory();
+          Update.manuallyLog(appEmail);
+          closeFrame();
+          new LoginFrame();
         }
       }
     );
   }
+
+  public void closeFrame() {
+    //Close the Login Page
+    this.setVisible(false);
+    this.dispose();
+  }
+
 }
 
 public class SayIt {
-  public static void main(String args[]) {
-    //Launches App by first Logging In
-    String previousUser = Read.checkAutomaticLogin();
-    if (previousUser == null){
-      LoginFrame frame = new LoginFrame();
-    }
-    else {
-      new AppFrame(previousUser);
-    }
-  }
 } 

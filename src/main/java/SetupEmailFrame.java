@@ -36,7 +36,7 @@ public class SetupEmailFrame extends JFrame{
 
     //Buttons for login page
     JButton cancelButton = new JButton("Cancel");
-    JButton setupButton = new JButton("Setup");
+    JButton setupButton = new JButton("Save");
 
     String email;
 
@@ -144,16 +144,24 @@ public class SetupEmailFrame extends JFrame{
             @Override
             public void mousePressed(MouseEvent e) {
                 //retrieve the input from all textfields
-                String firstNameText = firstNameField.getText();
-                String lastNameText = lastNameField.getText();
-                String displayText = displayField.getText();
-                String emailText = emailField.getText();
-                String SMTPhostText = SMTPhostField.getText();
-                String TLSPortText = TLSPortField.getText();
-                String EmailPasswordText = EmailPasswordField.getText();
+                String firstNameText = firstNameField.getText().strip();
+                String lastNameText = lastNameField.getText().strip();
+                String displayText = displayField.getText().strip();
+                String emailText = emailField.getText().strip();
+                String SMTPhostText = SMTPhostField.getText().strip();
+                String TLSPortText = TLSPortField.getText().strip();
+                String EmailPasswordText = EmailPasswordField.getText().strip();
 
+                Boolean checkFields = firstNameText == "" || lastNameText == "" || displayText == "" || emailText == "" || SMTPhostText == "" || TLSPortText == "" || EmailPasswordText == "";
                 //FIX ME: Add code for setup email using the given input 
-                Update.updateSetupEmailInfo(email, firstNameText, lastNameText, displayText, emailText, SMTPhostText, TLSPortText, EmailPasswordText);
+                if (checkFields){
+                  JOptionPane.showMessageDialog(null, "Please fill out all fields", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                  Update.updateSetupEmailInfo(email, firstNameText, lastNameText, displayText, emailText, SMTPhostText, TLSPortText, EmailPasswordText);
+                  JOptionPane.showMessageDialog(null, "Your email information has been successfully created/updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                  closeFrame();
+                }
             }
           }
         );

@@ -30,6 +30,8 @@ public class LoginFrame extends JFrame {
     JButton registerButton = new JButton("Register");
     JCheckBox loginAutoButton = new JCheckBox("Login Automatically");
 
+    private boolean debug;
+
     //constructor for login page
     LoginFrame() {
 
@@ -48,6 +50,8 @@ public class LoginFrame extends JFrame {
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
+
+        debug = false;
     }
 
     //close the frame
@@ -113,9 +117,21 @@ public class LoginFrame extends JFrame {
         return true;
       }
       else {
-        JOptionPane.showMessageDialog(null, "Wrong email or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
+        if (!debug)
+          JOptionPane.showMessageDialog(null, "Wrong email or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
         return false;
       }
+    }
+
+    //Testing Code Methods (Getter Methods)
+    public Component getUserTextField() {
+      return this.userTextField;
+    }
+    public Component getPasswordField() {
+      return this.passwordField; 
+    }
+    public Component getAutomaticLogin() {
+      return this.loginAutoButton; 
     }
 
     //add responses to the buttons
@@ -143,4 +159,18 @@ public class LoginFrame extends JFrame {
           }
         );
     }
+
+  public void debugOn(){
+    debug = true;
+  }
+
+  public static void main (String[] args){
+    String previousUser = Read.checkAutomaticLogin();
+    if (previousUser == null){
+      LoginFrame frame = new LoginFrame();
+    }
+    else{
+      new AppFrame(previousUser);
+    }
+  }
 }

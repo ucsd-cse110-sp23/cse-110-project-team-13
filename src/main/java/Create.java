@@ -17,7 +17,8 @@ public class Create {
             Document chatData = new Document("_id", new ObjectId());
             chatData.append("appEmail", email)
                     .append("Question", question)
-                    .append("Response", answer);
+                    .append("Response", answer)
+                    .append("isEmail", false);
                     
 
             chatDataCollection.insertOne(chatData);
@@ -40,6 +41,22 @@ public class Create {
         }
       } else {
         return false;
+      }
+    }
+
+    public static void addEmail(String question, String answer, String email){
+      try (MongoClient mongoClient = MongoClients.create(uri)) {
+        MongoDatabase database = mongoClient.getDatabase("sayit_data");
+        MongoCollection<Document> chatDataCollection = database.getCollection("user_chat_data");
+
+        Document chatData = new Document("_id", new ObjectId());
+        chatData.append("appEmail", email)
+                .append("Question", question)
+                .append("Response", answer)
+                .append("isEmail", true);
+                
+
+        chatDataCollection.insertOne(chatData);
       }
     }
 }

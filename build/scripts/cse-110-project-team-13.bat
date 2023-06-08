@@ -72,7 +72,7 @@ set CLASSPATH=%APP_HOME%\lib\cse-110-project-team-13.jar;%APP_HOME%\lib\json-202
 
 
 @rem Execute cse-110-project-team-13
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CSE_110_PROJECT_TEAM_13_OPTS%  -classpath "%CLASSPATH%" SayIt %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CSE_110_PROJECT_TEAM_13_OPTS%  -classpath "%CLASSPATH%" LoginFrame %*
 
 :end
 @rem End local scope for the variables with windows NT shell

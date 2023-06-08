@@ -60,6 +60,7 @@ public class Read {
                         Question newQuestion = new Question();
                         newQuestion.qName.setText(chat.getString("Question"));
                         newQuestion.answer = chat.getString("Response");
+                        newQuestion.isEmail = chat.getBoolean("isEmail");
                         questionList.add(newQuestion);
                     }
                 }
@@ -91,12 +92,45 @@ public class Read {
         MongoCollection<Document> userLoginDataCollection = sampleTrainingDB.getCollection("user_login_data");
         Document user = userLoginDataCollection.find(eq("appEmail", email)).first();
 
-        if (user.getString("firstName") == null){
+        if (user.getString("firstName") == null || user.getString("sendEmail") == null){
           return null;
         }
         else {
+          info[0] = user.getString("firstName");
+          info[1] = user.getString("lastName");
+          info[2] = user.getString("displayName");
+          info[3] = user.getString("sendEmail");
+          info[4] = user.getString("SMTPHost");
+          info[5] = user.getString("TLSPort");
+          info[6] = user.getString("emailPassword");
+          return info;
+        }
+      }
+    }
+
+    public static String[] getUserInfo(String email) {
+      String[] info = new String[9];
+      try (MongoClient mongoClient = MongoClients.create(uri)) {
+        MongoDatabase sampleTrainingDB = mongoClient.getDatabase("sayit_data");
+        MongoCollection<Document> userLoginDataCollection = sampleTrainingDB.getCollection("user_login_data");
+        Document user = userLoginDataCollection.find(eq("appEmail", email)).first();
+
+        if (user == null){
+          System.out.println("User does not exist");
           return null;
         }
+        else {
+          info[0] = user.getString("appEmail");
+          info[1] = user.getString("appPassword");
+          info[2] = user.getString("firstName");
+          info[3] = user.getString("lastName");
+          info[4] = user.getString("displayName");
+          info[5] = user.getString("sendEmail");
+          info[6] = user.getString("SMTPHost");
+          info[7] = user.getString("TLSPort");
+          info[8] = user.getString("emailPassword");
+        }
+        return info;
       }
     }
 }
