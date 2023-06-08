@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Currency;
 
 public class Body extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
@@ -155,7 +156,7 @@ public class Body extends JPanel {
         }
         else if (transcript.length() >= 15 && 
         transcript.substring(0, 10).toLowerCase().equals("send email")) {
-          sendEmail(transcript.substring(11));
+          sendEmail(transcript);
         }
         else if (transcript.toLowerCase().equals("delete prompt") || transcript.toLowerCase().equals("delete prompt.")) {
           if (currQuestion == null){
@@ -250,10 +251,10 @@ public class Body extends JPanel {
     this.revalidate();
   }
 
-  public void sendEmail(String transcript){
+  public Boolean sendEmail(String transcript){
     if (currQuestion == null || currQuestion.isEmail == null || currQuestion.isEmail == false){
       JOptionPane.showMessageDialog(null, "Please select an email", "Error", JOptionPane.INFORMATION_MESSAGE);
-      return;
+      return false;
     }
 
     // find email from transcript
@@ -283,10 +284,20 @@ public class Body extends JPanel {
     emailInfo = Read.sendEmailInfo(appEmail);
     if (emailInfo == null){
       JOptionPane.showMessageDialog(null, "Please setup your email first with the 'Setup Email' voice command", "Error", JOptionPane.INFORMATION_MESSAGE);
-      return;
+      return false;
     }
     else {
-      SendEmail.sendEmail(null, realEmail, transcript, realEmail);
+      Exception result = SendEmail.sendEmail(emailInfo[3], emailInfo[6], realEmail, emailInfo[4], emailInfo[5], currQuestion.answer);
+      currQuestion = null;
+      questionPanel.setText(transcript);
+      if (result == null){
+        answerPanel.setText("Your email has been successfully sent!");
+        return true;
+      }
+      else {
+        answerPanel.setText(result.toString());
+        return false;
+      }
     }
   }
 

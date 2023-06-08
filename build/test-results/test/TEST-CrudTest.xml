@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CrudTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2023-06-08T13:23:06" hostname="LAPTOP-PHAURQUR" time="31.71">
+  <properties/>
+  <testcase name="sendEmailInfo()" classname="CrudTest" time="3.25"/>
+  <testcase name="updateSetupEmailInfo()" classname="CrudTest" time="6.261"/>
+  <testcase name="addLoginInfo()" classname="CrudTest" time="4.072"/>
+  <testcase name="addQuestionAndAnswer()" classname="CrudTest" time="1.573"/>
+  <testcase name="addEmail()" classname="CrudTest" time="1.404"/>
+  <testcase name="manuallyLog()" classname="CrudTest" time="0.003"/>
+  <testcase name="checkAutomaticLogin()" classname="CrudTest" time="0.714"/>
+  <testcase name="clearAll()" classname="CrudTest" time="1.355"/>
+  <testcase name="clearOne()" classname="CrudTest" time="2.032"/>
+  <testcase name="successfulLogin()" classname="CrudTest" time="1.987"/>
+  <testcase name="clearDatabase()" classname="CrudTest" time="1.493"/>
+  <testcase name="userExists()" classname="CrudTest" time="2.041"/>
+  <testcase name="getUserInfo()" classname="CrudTest" time="1.985"/>
+  <testcase name="automaticallyLog()" classname="CrudTest" time="2.084"/>
+  <testcase name="readUserChatDataByEmail()" classname="CrudTest" time="1.449"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Jun 08, 2023 6:23:06 AM com.mongodb.internal.diagnostics.logging.Loggers shouldUseSLF4J
+WARNING: SLF4J not found on the classpath.  Logging is disabled for the 'org.mongodb.driver' component
+]]></system-err>
+</testsuite>

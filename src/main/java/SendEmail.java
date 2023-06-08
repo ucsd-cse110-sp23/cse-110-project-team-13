@@ -19,14 +19,14 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
 
-	public static void main(String[] args) {
-		final String fromEmail = "email@gmail.com"; 
-		final String password = "password";
-		final String toEmail = "otherEmail@gmail.com";
+	public static Exception sendEmail (String fEmail, String emailPassword, String tEmail, String SMTPHost, String TLSPort, String body){
+    final String fromEmail = fEmail; 
+		final String password = emailPassword;
+		final String toEmail = tEmail;
 		
 		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com"); 
-		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.host", SMTPHost); 
+		props.put("mail.smtp.port", TLSPort);
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		
@@ -37,11 +37,11 @@ public class SendEmail {
 		};
 		Session session = Session.getInstance(props, auth);
 		
-		sendEmail(session, toEmail,"TLSEmail Testing Subject", "TLSEmail Testing Body");
-		
+		return makeEmailSession(session, toEmail,"SayIt Email", body);
 	}
 
-	public static void sendEmail(Session session, String toEmail, String subject, String body){
+	public static Exception makeEmailSession(Session session, String toEmail, String subject, String body){
+    Exception result = null;
 		try
 	    {
 	      MimeMessage msg = new MimeMessage(session);
@@ -64,8 +64,9 @@ public class SendEmail {
 
 	    }
 	    catch (Exception e) {
-	      e.printStackTrace();
+	      return e;
 	    }
+    return result;
 	}
 	
 }

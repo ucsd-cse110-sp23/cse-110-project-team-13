@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TranscriptionTests" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-06-08T10:57:07" hostname="LAPTOP-PHAURQUR" time="0.259">
+<testsuite name="TranscriptionTests" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-06-08T13:24:15" hostname="LAPTOP-PHAURQUR" time="0.193">
   <properties/>
-  <testcase name="testHandleResponseSuccess" classname="TranscriptionTests" time="0.001"/>
+  <testcase name="testHandleResponseSuccess" classname="TranscriptionTests" time="0.0"/>
   <testcase name="testTranscriptionSilence" classname="TranscriptionTests" time="0.001"/>
-  <testcase name="testCloseRequestBody" classname="TranscriptionTests" time="0.136"/>
-  <testcase name="testWriteFile" classname="TranscriptionTests" time="0.066"/>
-  <testcase name="testWriteParameter" classname="TranscriptionTests" time="0.051"/>
-  <testcase name="testSetupRequestHeader" classname="TranscriptionTests" time="0.002"/>
+  <testcase name="testCloseRequestBody" classname="TranscriptionTests" time="0.066"/>
+  <testcase name="testWriteFile" classname="TranscriptionTests" time="0.069"/>
+  <testcase name="testWriteParameter" classname="TranscriptionTests" time="0.054"/>
+  <testcase name="testSetupRequestHeader" classname="TranscriptionTests" time="0.001"/>
   <testcase name="testTranscription" classname="TranscriptionTests" time="0.001"/>
   <testcase name="testSetupConnection" classname="TranscriptionTests" time="0.0"/>
   <system-out><![CDATA[]]></system-out>

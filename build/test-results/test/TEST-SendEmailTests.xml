@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SendEmailTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-06-08T13:24:03" hostname="LAPTOP-PHAURQUR" time="11.499">
+  <properties/>
+  <testcase name="createEmail" classname="SendEmailTests" time="8.002"/>
+  <testcase name="setupEmail" classname="SendEmailTests" time="3.497"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
