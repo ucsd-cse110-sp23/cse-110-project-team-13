@@ -32,13 +32,6 @@ public class LoginFrame extends JFrame {
 
     //constructor for login page
     LoginFrame() {
-        String previousUser = Read.checkAutomaticLogin();
-        if (previousUser == null){
-        }
-        else{
-          closeFrame();
-          new AppFrame(previousUser);
-        }
 
         //setups the page
         this.setTitle("Sign In Page");
@@ -115,14 +108,25 @@ public class LoginFrame extends JFrame {
         else {
           Update.manuallyLog(userText);
         }
-        closeFrame();
         new AppFrame(userText);
+        closeFrame();
         return true;
       }
       else {
         JOptionPane.showMessageDialog(null, "Wrong email or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
         return false;
       }
+    }
+
+    //Testing Code Methods (Getter Methods)
+    public Component getUserTextField() {
+      return this.userTextField;
+    }
+    public Component getPasswordField() {
+      return this.passwordField; 
+    }
+    public Component getAutomaticLogin() {
+      return this.loginAutoButton; 
     }
 
     //add responses to the buttons
@@ -151,7 +155,7 @@ public class LoginFrame extends JFrame {
         );
     }
 
-  public static void main (String[] args){
-    LoginFrame frame = new LoginFrame();
-  }
+    public static void main(String[] args) {
+        new LoginFrame(); 
+    } 
 }

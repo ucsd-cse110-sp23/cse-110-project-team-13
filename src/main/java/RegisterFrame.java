@@ -80,13 +80,13 @@ public class RegisterFrame extends JFrame {
         verifyPasswordLabel.setBounds(50, 200, 150, 30);
 
         //text fields for email, password, and verify password
-        emailTextField.setBounds(150,100,150,30);
-        passwordField.setBounds(150,150,150,30);
-        verifyPasswordField.setBounds(150, 200, 150, 30);
+        emailTextField.setBounds(170,100,150,30);
+        passwordField.setBounds(170,150,150,30);
+        verifyPasswordField.setBounds(170, 200, 150, 30);
 
         //buttons
-        createAccountButton.setBounds(50,250,130,30);
-        cancelButton.setBounds(200,250,100,30);
+        createAccountButton.setBounds(200,250,130,30);
+        cancelButton.setBounds(50,250,100,30);
     }
 
     //add each components to the Container
@@ -102,11 +102,11 @@ public class RegisterFrame extends JFrame {
         container.add(createAccountButton);
     }
 
-    public void register(String emailText, String pwdText, String verifypwdText) {
+    public boolean register(String emailText, String pwdText, String verifypwdText) {
       // Check for empty fields
       if (emailText.strip() == "" || pwdText.strip() == "" || verifypwdText.strip() == ""){
         JOptionPane.showMessageDialog(null, "Please fill out all fields", "Error", JOptionPane.INFORMATION_MESSAGE);
-        return;
+        return false;
       }
 
       //check that the verify password matches the password text
@@ -115,13 +115,16 @@ public class RegisterFrame extends JFrame {
         if (Create.addLoginInfo(emailText, pwdText)) {
           new LoginFrame();     //opens Login Frame after registering account
           closeFrame();       //close screen and return back to login page
+          return true;
         }
         else {
           JOptionPane.showMessageDialog(null, "This email has already been registered", "Error", JOptionPane.INFORMATION_MESSAGE);
+          return false; 
         }
       }
       else {
         JOptionPane.showMessageDialog(null, "The 2 passwords do not match", "Error", JOptionPane.INFORMATION_MESSAGE);
+        return false; 
       }
     }
 
