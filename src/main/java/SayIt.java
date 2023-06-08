@@ -130,7 +130,8 @@ class AppFrame extends JFrame {
       new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
-          Update.manuallyLog(appEmail);
+          File file = new File("lastLogin.txt");
+          file.delete();
           closeFrame();
           new LoginFrame();
         }

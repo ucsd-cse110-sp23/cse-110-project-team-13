@@ -36,13 +36,20 @@ public class Body extends JPanel {
     prompt.setPreferredSize(new Dimension(400, 370));
     history.setPreferredSize(new Dimension(400, 1000));
 
-    JTextArea questionPanel = new JTextArea();
+    questionPanel = new JTextArea();
     questionPanel.setLineWrap(true);
     questionPanel.setEditable(false);
-    JTextArea answerPanel = new JTextArea();
+    questionPanel.setBorder(BorderFactory.createCompoundBorder(
+      questionPanel.getBorder(), 
+      BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+    answerPanel = new JTextArea();
     answerPanel.setBackground(new Color(240, 240, 240));
     answerPanel.setLineWrap(true);
     answerPanel.setEditable(false);
+    answerPanel.setBorder(BorderFactory.createCompoundBorder(
+      answerPanel.getBorder(), 
+      BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
     JPanel qnaPanel = new JPanel(new GridLayout(2, 1));
     qnaPanel.add(questionPanel);
@@ -109,7 +116,12 @@ public class Body extends JPanel {
           @Override
           public void mousePressed(MouseEvent e){
             clearPanels();
-            questionPanel.setText(q.qName.getText());
+            if (q.isEmail){
+              questionPanel.setText(q.qName.getText().substring(7));
+            }
+            else{
+              questionPanel.setText(q.qName.getText().substring(10));
+            }
             answerPanel.setText(q.answer);
             currQuestion = q;
           }
@@ -182,21 +194,27 @@ public class Body extends JPanel {
     String question = transcript.strip();
     clearPanels();
     String generatedText = "";
-
-    for (int i = question.length() - 1; i > 0; i--){
-      while
-    }
+    
     questionPanel.setText(question);
     Question newQuestion = new Question();
     if (makeEmail){
-      question = "Email: " + question.trim();
+      question = "Email: " + question;
     }
     else {
-      question = "Question: " + question.trim();
+      question = "Question: " + question;
     }
     newQuestion.qName.setText(question);
     generatedText = ChatGPT.generateText(question, 2048);
     generatedText = generatedText.strip();
+    if (makeEmail){
+      String[] displayName = Read.sendEmailInfo(appEmail);
+      if (displayName == null){
+      }
+      else {
+        generatedText = generatedText.substring(0, question.length() - 11);
+        generatedText += displayName[2];
+      }
+    }
     newQuestion.answer = generatedText;
 
     newQuestion.qName.addMouseListener(
@@ -204,7 +222,12 @@ public class Body extends JPanel {
         @Override
         public void mousePressed(MouseEvent e){
           clearPanels();
-          questionPanel.setText(newQuestion.qName.getText());
+          if (newQuestion.isEmail){
+            questionPanel.setText(newQuestion.qName.getText().substring(7));
+          }
+          else{
+            questionPanel.setText(newQuestion.qName.getText().substring(10));
+          }
           answerPanel.setText(newQuestion.answer);
           currQuestion = newQuestion;
         }

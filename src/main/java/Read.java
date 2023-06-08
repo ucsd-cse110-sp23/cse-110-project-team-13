@@ -2,6 +2,11 @@ import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,9 +79,18 @@ public class Read {
       try (MongoClient mongoClient = MongoClients.create(uri)) {
         MongoDatabase sampleTrainingDB = mongoClient.getDatabase("sayit_data");
         MongoCollection<Document> userLoginDataCollection = sampleTrainingDB.getCollection("user_login_data");
-        Document user = userLoginDataCollection.find(eq("previouslyLogged", true)).first();
+        
+        String lastUser;
+        try {
+          BufferedReader reader = new BufferedReader(new FileReader("lastLogin.txt", StandardCharsets.UTF_8));
+          lastUser = reader.readLine();
+          reader.close();
+        } catch (IOException e){
+          lastUser = null;
+        }
 
-        if (user != null){
+        if (lastUser != null){
+          Document user = userLoginDataCollection.find(eq("appEmail", lastUser)).first();
           return user.getString("appEmail");
         }
         else {

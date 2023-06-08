@@ -10,6 +10,9 @@ Initials: JS
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 //Login Frame Class
 public class LoginFrame extends JFrame {
@@ -104,13 +107,18 @@ public class LoginFrame extends JFrame {
         container.add(registerButton);
     }
 
-    public boolean login(String userText, String pwdText){
+    public boolean login(String userText, String pwdText) {
       if (Read.successfulLogin(userText, pwdText)){
         if (loginAutoButton.isSelected() == true) {
-          Update.automaticallyLog(userText);
+          try {
+            FileWriter writer = new FileWriter("lastLogin.txt", StandardCharsets.UTF_8, false);
+            writer.write(userText);
+            writer.close();
+          } catch (IOException e){
+            e.getStackTrace();
+          }
         }
         else {
-          Update.manuallyLog(userText);
         }
         new AppFrame(userText);
         closeFrame();

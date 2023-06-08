@@ -33,9 +33,7 @@ public class Create {
 
           Document userData = new Document("_id", new ObjectId());
           userData.append("appEmail", email)
-                  .append("appPassword", password)
-                  .append("previouslyLogged", false);
-
+                  .append("appPassword", password);
           userDataCollection.insertOne(userData);
           return true;
         }
