@@ -77,7 +77,7 @@ public class RegisterFrame extends JFrame {
         //email, password, and verify password label
         emailLabel.setBounds(50,100,100,30);
         passwordLabel.setBounds(50,150,100,30);
-        verifyPasswordLabel.setBounds(50, 200, 100, 30);
+        verifyPasswordLabel.setBounds(50, 200, 150, 30);
 
         //text fields for email, password, and verify password
         emailTextField.setBounds(150,100,150,30);
@@ -102,6 +102,29 @@ public class RegisterFrame extends JFrame {
         container.add(createAccountButton);
     }
 
+    public void register(String emailText, String pwdText, String verifypwdText) {
+      // Check for empty fields
+      if (emailText.strip() == "" || pwdText.strip() == "" || verifypwdText.strip() == ""){
+        JOptionPane.showMessageDialog(null, "Please fill out all fields", "Error", JOptionPane.INFORMATION_MESSAGE);
+        return;
+      }
+
+      //check that the verify password matches the password text
+      if (pwdText.equals(verifypwdText)){
+        //FIX ME: Add code for registering account to database
+        if (Create.addLoginInfo(emailText, pwdText)) {
+          new LoginFrame();     //opens Login Frame after registering account
+          closeFrame();       //close screen and return back to login page
+        }
+        else {
+          JOptionPane.showMessageDialog(null, "This email has already been registered", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+      }
+      else {
+        JOptionPane.showMessageDialog(null, "The 2 passwords do not match", "Error", JOptionPane.INFORMATION_MESSAGE);
+      }
+    }
+
     //add responses to the buttons
     public void addListeners() {
         createAccountButton.addMouseListener(
@@ -109,19 +132,11 @@ public class RegisterFrame extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 //retrieve the input for email, password, verify password
-                String emailText = emailTextField.getText();
-                String pwdText = passwordField.getText();
-                String verifypwdText = verifyPasswordField.getText();
+                String emailText = emailTextField.getText().strip();
+                String pwdText = passwordField.getText().strip();
+                String verifypwdText = verifyPasswordField.getText().strip();
 
-                //check that the verify password matches the password text
-                if (pwdText.equals(verifypwdText)){
-
-                    //FIX ME: Add code for registering account to database
-
-                    new AppFrame(emailText);     //opens SayIt App after registering account
-                    closeFrame();       //close screen and return back to login page
-
-                }
+                register(emailText, pwdText, verifypwdText);
             }
           }
         );

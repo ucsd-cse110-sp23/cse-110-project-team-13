@@ -22,6 +22,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     implementation files('lib/json-20230227.jar')
     implementation files('lib/junit-platform-console-standalone-1.9.3.jar')
+    implementation files('lib/javax.mail.jar')
 
     //MongoDB access
     implementation 'org.mongodb:mongodb-driver-sync:4.9.1'

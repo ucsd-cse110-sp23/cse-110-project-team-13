@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.io.*;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class Body extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
@@ -11,17 +12,17 @@ public class Body extends JPanel {
   public JPanel history;
   public DefaultListModel<String> model;
   public boolean micOpen;
-  public ArrayList<Question> questions;
   public Recording recording;
   public Question currQuestion;
   private JScrollPane scrollHistory;
+  public String email;
 
   Body(String username) {
     prompt = new JPanel();
     history = new JPanel();
     micOpen = false;
-    questions = new ArrayList<Question>();
     recording = new Recording();
+    email = username;
 
     // Set the layout manager of this JPanel to GridBagLayout
     this.setLayout(new GridBagLayout());
@@ -85,19 +86,21 @@ public class Body extends JPanel {
         history.remove(c); // remove the component
       }
     }
-    questions.clear();
     model.clear();
     this.repaint(); 
     this.revalidate();
+    Delete.clearAll();
   }
   
 
   //Loads Previous Questions from Database
   public ArrayList<Question> loadQuestions() {
-
+    // ArrayList<Question> questionList = new ArrayList<Question>();
+    // questionList = Read.readUserChatDataByEmail(email);
+    return null;
   } 
 
-  public void voiceCommands() throws IOException, InterruptedException{
+  public void voiceCommands(File file) throws IOException, InterruptedException{
     if (micOpen == false){
       recording.openMicrophone();
       micOpen = true;
@@ -107,21 +110,31 @@ public class Body extends JPanel {
       micOpen = false;
       try {
         String transcript = TranscribeAudio.transcribeAudio("recording.wav");
-        if (transcript.length() >= 10 && transcript.substring(0, 10).toLowerCase() == "question.") {
-          model.clear();
+        if (transcript.length() >= 10 && transcript.substring(0, 7).toLowerCase() == "question") {
           newQuestion(transcript.substring(10));
+        }
+        else if (transcript.length() >= 10 && transcript.substring(0, 7).toLowerCase() == "create email") {
+          newQuestion(transcript);
         }
         else if (transcript.toLowerCase() == "delete prompt") {
           history.remove(currQuestion);
-          questions.remove(currQuestion);
           repaint();
           revalidate();
+          Delete.clearOne(currQuestion.qName.getText());
         }
         else if (transcript.toLowerCase() == "clear all") {
           clearHistory();
           model.clear();
           repaint(); 
           revalidate();
+          Delete.clearAll();
+        }
+        else if (transcript.toLowerCase() == "setup email") {
+          new SetupEmailFrame(email);
+        }
+        else{
+          JOptionPane.showMessageDialog(null, "Sorry, I cannot understand you. Your message was:\n" + transcript, "Error", JOptionPane.INFORMATION_MESSAGE);
+          return;
         }
       }
       catch (IOException | InterruptedException e){
@@ -137,22 +150,10 @@ public class Body extends JPanel {
     model.addElement(question);
     Question newQuestion = new Question();
     newQuestion.qName.setText(question);
-    JButton doneButton = newQuestion.getDone(); 
-    doneButton.addMouseListener(
-      new MouseAdapter(){
-        @Override
-        public void mousePressed(MouseEvent e){
-          history.remove(newQuestion);
-          questions.remove(newQuestion);
-          repaint(); 
-          revalidate(); 
-        }
-      }
-    );
-
     generatedText = ChatGPT.generateText(question, 2048);
     generatedText = generatedText.replace("\n", "");
     newQuestion.answer = generatedText;
+    
     newQuestion.qName.addMouseListener(
       new MouseAdapter(){
         @Override
@@ -166,11 +167,10 @@ public class Body extends JPanel {
     );
 
     history.add(newQuestion);
-    questions.add(newQuestion);
     model.addElement(generatedText);
     currQuestion = newQuestion;
 
-    Create.addQuestionAndAnswer(question, generatedText);
+    Create.addQuestionAndAnswer(email, question, generatedText);
     this.revalidate();
   }
 }

@@ -1,8 +1,9 @@
-/*
-Login Page of SayItApp
-Users have to input an email and password in order to login to the SayIt App.
-Website used for template/reference:
-https://www.tutorialsfield.com/login-form-in-java-swing-with-source-code/
+/*Citation
+Website: https://www.tutorialsfield.com/login-form-in-java-swing-with-source-code/
+Title: Login Form in Java Swing with Source Code Tutorial
+Data Accessed: 5/30/22
+Source Use: Learning and Template
+Initials: JS
 */
 
 //importing packages
@@ -99,6 +100,22 @@ public class LoginFrame extends JFrame {
         container.add(registerButton);
     }
 
+    public void login(String userText, String pwdText){
+      if (Read.successfulLogin(userText, pwdText)){
+        if (loginAutoButton.isSelected() == true) {
+          Update.automaticallyLog(userText);
+        }
+        else {
+          Update.manuallyLog(userText);
+        }
+        new AppFrame(userText);
+        closeFrame();
+      }
+      else {
+        JOptionPane.showMessageDialog(null, "Wrong email or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
+      }
+    }
+
     //add responses to the buttons
     public void addListeners() {
         loginButton.addMouseListener(
@@ -106,25 +123,10 @@ public class LoginFrame extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 //retrieve the input for user and password
-                String userText = userTextField.getText();
-                String pwdText = passwordField.getText();
+                String userText = userTextField.getText().strip();
+                String pwdText = passwordField.getText().strip();
 
-                //FIX ME: Add code for email and password retrieval from database
-
-                //check the password and email is correct
-                if (userText.equalsIgnoreCase("Test1") && pwdText.equalsIgnoreCase("12345")) {
-                    new AppFrame(userText); //open SayIt app
-                    closeFrame();   //close LoginFrame
-                }
-            }
-          }
-        );
-
-        loginAutoButton.addMouseListener(
-          new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                //FIX ME: Add Code for Remembering login from database
+                login(userText, pwdText);
             }
           }
         );

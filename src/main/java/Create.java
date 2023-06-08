@@ -15,25 +15,31 @@ public class Create {
             MongoCollection<Document> chatDataCollection = database.getCollection("user_chat_data");
 
             Document chatData = new Document("_id", new ObjectId());
-            chatData.append("Question", question)
-                    .append("Response", answer)
-                    .append("Email", email);
+            chatData.append("appEmail", email)
+                    .append("Question", question)
+                    .append("Response", answer);
+                    
 
             chatDataCollection.insertOne(chatData);
         }
     }
 
-    public static void addUserInfo(String question, String answer, String email) {
-      try (MongoClient mongoClient = MongoClients.create(uri)) {
+    public static boolean addLoginInfo(String email, String password) {
+      if (!Read.userExists(email)){
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
           MongoDatabase database = mongoClient.getDatabase("sayit_data");
-          MongoCollection<Document> chatDataCollection = database.getCollection("user_chat_data");
+          MongoCollection<Document> userDataCollection = database.getCollection("user_login_data");
 
-          Document chatData = new Document("_id", new ObjectId());
-          chatData.append("Question", question)
-                  .append("Response", answer)
-                  .append("Email", email);
+          Document userData = new Document("_id", new ObjectId());
+          userData.append("appEmail", email)
+                  .append("appPassword", password)
+                  .append("previouslyLogged", false);
 
-          chatDataCollection.insertOne(chatData);
+          userDataCollection.insertOne(userData);
+          return true;
+        }
+      } else {
+        return false;
       }
     }
 }
