@@ -36,7 +36,7 @@ public class SetupEmailFrame extends JFrame{
 
     //Buttons for login page
     JButton cancelButton = new JButton("Cancel");
-    JButton setupButton = new JButton("Setup");
+    JButton setupButton = new JButton("Save");
 
     String email;
 

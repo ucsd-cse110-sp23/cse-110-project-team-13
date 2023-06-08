@@ -71,7 +71,6 @@ class Header extends JPanel {
     logoutButton = new JButton("Logout"); // add logout button
     logoutButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
     this.add(logoutButton); // add to header
-    logoutButton.setBounds(300, 30, 30, 30);
   }
 
   //method to get logoutButton
@@ -87,16 +86,12 @@ class AppFrame extends JFrame {
   private Body body;
 
   private JButton startButton;
-  private JButton LogoutButton; 
-  
-
   //adding logoutButton
   private JButton logoutButton; 
-
-  //adding logoutButton
-  private JButton logoutButton; 
+  private String appEmail;
 
   AppFrame(String username) {
+    appEmail = username;
     this.setSize(400, 600); // 400 width and 600 height
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close on exit
     this.setVisible(true); // Make visible
@@ -135,11 +130,20 @@ class AppFrame extends JFrame {
       new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
-            //FIX ME
+          Update.manuallyLog(appEmail);
+          closeFrame();
+          new LoginFrame();
         }
       }
     );
   }
+
+  public void closeFrame() {
+    //Close the Login Page
+    this.setVisible(false);
+    this.dispose();
+  }
+
 }
 
 public class SayIt {

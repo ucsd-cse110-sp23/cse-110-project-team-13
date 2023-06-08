@@ -179,11 +179,14 @@ public class Body extends JPanel {
   }
 
   public void newQuestion(String transcript, Boolean makeEmail) throws IOException, InterruptedException{
-    String question = transcript;
+    String question = transcript.strip();
     clearPanels();
     String generatedText = "";
 
-    questionPanel.setText(question.trim());
+    for (int i = question.length() - 1; i > 0; i--){
+      while
+    }
+    questionPanel.setText(question);
     Question newQuestion = new Question();
     if (makeEmail){
       question = "Email: " + question.trim();
@@ -193,7 +196,7 @@ public class Body extends JPanel {
     }
     newQuestion.qName.setText(question);
     generatedText = ChatGPT.generateText(question, 2048);
-    generatedText = generatedText.trim();
+    generatedText = generatedText.strip();
     newQuestion.answer = generatedText;
 
     newQuestion.qName.addMouseListener(
@@ -226,11 +229,25 @@ public class Body extends JPanel {
 
   public void sendEmail(String transcript){
     if (currQuestion.isEmail == false){
-      JOptionPane.showMessageDialog(null, "Please select an email and not a prompt", "Error", JOptionPane.INFORMATION_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Please select an email", "Error", JOptionPane.INFORMATION_MESSAGE);
       return;
     }
 
     // find email from transcript
+    String realEmail = "";
+    for (int i = transcript.length() - 1; i > 0; i--){
+      if (transcript.charAt(i) == ' ')
+        break;
+      else if (transcript.charAt(i) == 't' && transcript.charAt(i-1) == 'a'){
+        realEmail += '@';
+        i--;
+        continue;
+      }
+      realEmail += transcript.charAt(i);
+    }
+
+    realEmail = new StringBuilder(realEmail).reverse().toString();
+    System.out.println(realEmail);
 
     String[] emailInfo = new String[7];
     emailInfo = Read.sendEmailInfo(appEmail);

@@ -28,6 +28,7 @@ public class LoginTest {
 
         //create instance of login frame
         this.testLoginFrame = new LoginFrame();
+        testLoginFrame.debugOn();
         assertFalse(testLoginFrame.login(testUser, testPassword));
 
         //close the frame
@@ -43,6 +44,7 @@ public class LoginTest {
 
         //test that the account does not login
         this.testLoginFrame = new LoginFrame();
+        testLoginFrame.debugOn();
         assertFalse(testLoginFrame.login(testUser, testPassword)); 
 
         //close the frame
@@ -63,6 +65,7 @@ public class LoginTest {
 
         //test that the account successfully logins
         this.testLoginFrame = new LoginFrame();
+        testLoginFrame.debugOn();
         assertFalse(testLoginFrame.login(testUser, "WrongPassword")); 
 
         //close the frame
@@ -84,6 +87,7 @@ public class LoginTest {
 
         //test that the account successfully logins
         this.testLoginFrame = new LoginFrame();
+        testLoginFrame.debugOn();
         assertTrue(testLoginFrame.login(testUser, testPassword)); 
 
         //close the frame

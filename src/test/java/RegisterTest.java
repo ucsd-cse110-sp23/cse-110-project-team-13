@@ -28,7 +28,8 @@ public class RegisterTest {
         testVerifyPassword = "";
 
         //create instance of login frame
-        this.testRegisterFrame = new RegisterFrame();
+        testRegisterFrame = new RegisterFrame();
+        testRegisterFrame.debugOn();
 
         //checks register returns false indicating incorrect input
         assertFalse(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword));
@@ -47,6 +48,7 @@ public class RegisterTest {
 
         //create instance of login frame
         this.testRegisterFrame = new RegisterFrame();
+        testRegisterFrame.debugOn();
 
         //checks register returns false indicating incorrect input
         assertFalse(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword));
@@ -66,6 +68,7 @@ public class RegisterTest {
 
         //test that the account successfully logins
         this.testRegisterFrame = new RegisterFrame();
+        testRegisterFrame.debugOn();
         assertTrue(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword )); 
 
         //close the frame
@@ -89,6 +92,7 @@ public class RegisterTest {
 
         //test that the account does not login
         this.testRegisterFrame = new RegisterFrame();
+        testRegisterFrame.debugOn();
 
         //checks register returns false since account is already registered
         assertFalse(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword)); 
