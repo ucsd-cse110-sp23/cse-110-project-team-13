@@ -10,11 +10,13 @@ import org.junit.Test;
 public class VoiceCommandTests {
     MockRecording recording;
     List<String> promptHistory;
+    MockVoiceCommands voiceCommands;
     
     @Before
     public void setUp() {
         recording = new MockRecording();
         promptHistory = new ArrayList<String>();
+        voiceCommands = new MockVoiceCommands();
     }
 
     @Test
@@ -114,5 +116,68 @@ public class VoiceCommandTests {
         
         boolean empty = promptHistory.isEmpty();
         assertTrue(empty);
+    }
+
+    @Test
+    public void commandQuestion() {
+        try {
+            String commandResponse = MockVoiceCommands.voiceCommands("src/test/java/TestFiles/MockQuestion.txt");
+            assertEquals("Question Asked: what color is the sky?", commandResponse);
+            assertNotEquals(0, voiceCommands.promptHistory.size());
+            assertEquals("what color is the sky?", voiceCommands.promptHistory.get(0));
+            voiceCommands.promptHistory.clear();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+    }
+
+    @Test
+    public void commandDelete() {
+        try {
+            voiceCommands.promptHistory.add("what color is the sky?");
+            voiceCommands.promptHistory.add("what is agile?");
+            assertEquals(2, voiceCommands.promptHistory.size());
+            String commandResponse = MockVoiceCommands.voiceCommands("src/test/java/TestFiles/MockDeletePrompt.txt");
+            assertEquals("Prompt Deleted", commandResponse);
+            assertEquals(1, voiceCommands.promptHistory.size());
+            assertEquals("what is agile?", voiceCommands.promptHistory.get(0));
+            voiceCommands.promptHistory.clear();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+    }
+
+    @Test
+    public void commandClear() {
+        try {
+            voiceCommands.promptHistory.add("what color is the sky");
+            voiceCommands.promptHistory.add("what is agile");
+            assertEquals(2, voiceCommands.promptHistory.size());
+            String commandResponse = MockVoiceCommands.voiceCommands("src/test/java/TestFiles/MockClear.txt");
+            assertEquals("Prompts Cleared", commandResponse);
+            assertEquals(0, voiceCommands.promptHistory.size());
+            voiceCommands.promptHistory.clear();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
+    }
+
+    @Test
+    public void commandUnknown() {
+        try {
+            String commandResponse = MockVoiceCommands.voiceCommands("src/test/java/TestFiles/MockUnknown.txt");
+            assertEquals("Sorry, I cannot understand you. Your message was:\nUnknown Command", commandResponse);
+            voiceCommands.promptHistory.clear();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException interruptedException) {
+            interruptedException.printStackTrace();
+        }
     }
 }
