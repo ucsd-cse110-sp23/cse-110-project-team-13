@@ -91,6 +91,9 @@ public class Read {
 
         if (lastUser != null){
           Document user = userLoginDataCollection.find(eq("appEmail", lastUser)).first();
+          if (user == null) {
+            return null; 
+          }
           return user.getString("appEmail");
         }
         else {

@@ -12,6 +12,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 //Tests for Registering for a SayIt Account
+/*
+ * Tests
+ * User tries to register without inputting anything.
+ * User tries to register with incorrect password verification.
+ * User registers with a valid email and password input. 
+ * User tries to register with an account that is already registered.
+ */
 public class RegisterTest {
 
     RegisterFrame testRegisterFrame;
@@ -19,7 +26,7 @@ public class RegisterTest {
     String testPassword; 
     String testVerifyPassword; 
 
-    //User Input Nothing into the text fields. 
+    //User inputs tothing into the text fields. 
     @Test
     public void testBlankFields() throws Exception {
         //test blank input
@@ -69,7 +76,12 @@ public class RegisterTest {
         //test that the account successfully logins
         this.testRegisterFrame = new RegisterFrame();
         testRegisterFrame.debugOn();
+
+        //checks that register was successful
         assertTrue(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword )); 
+
+        //checks that user is in database
+        assertTrue(Read.userExists(testEmail)); 
 
         //close the frame
         this.testRegisterFrame.closeFrame();
@@ -82,7 +94,6 @@ public class RegisterTest {
     @Test
     public void testAlreadyRegisteredEmail() throws Exception {
         //make a user that is not registered
-        //make a user
         testEmail = "JohnDoe@ucsd.edu";
         testPassword = "Password";
         testVerifyPassword = "Password";
@@ -96,6 +107,9 @@ public class RegisterTest {
 
         //checks register returns false since account is already registered
         assertFalse(testRegisterFrame.register(testEmail, testPassword, testVerifyPassword)); 
+
+        //checks user exists in the database
+        assertTrue(Read.userExists(testEmail)); 
 
         //close the frame
         this.testRegisterFrame.closeFrame();

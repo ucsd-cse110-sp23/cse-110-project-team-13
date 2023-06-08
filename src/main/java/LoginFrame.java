@@ -132,12 +132,6 @@ public class LoginFrame extends JFrame {
     }
 
     //Testing Code Methods (Getter Methods)
-    public Component getUserTextField() {
-      return this.userTextField;
-    }
-    public Component getPasswordField() {
-      return this.passwordField; 
-    }
     public Component getAutomaticLogin() {
       return this.loginAutoButton; 
     }
