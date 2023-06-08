@@ -68,11 +68,11 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\cse-110-project-team-13.jar;%APP_HOME%\lib\json-20230227.jar;%APP_HOME%\lib\junit-platform-console-standalone-1.9.3.jar;%APP_HOME%\lib\mongodb-driver-sync-4.9.1.jar;%APP_HOME%\lib\mongodb-driver-core-4.9.1.jar;%APP_HOME%\lib\bson-record-codec-4.9.1.jar;%APP_HOME%\lib\bson-4.9.1.jar
+set CLASSPATH=%APP_HOME%\lib\cse-110-project-team-13.jar;%APP_HOME%\lib\json-20230227.jar;%APP_HOME%\lib\junit-platform-console-standalone-1.9.3.jar;%APP_HOME%\lib\javax.mail.jar;%APP_HOME%\lib\activation-1.1.jar;%APP_HOME%\lib\mongodb-driver-sync-4.9.1.jar;%APP_HOME%\lib\mongodb-driver-core-4.9.1.jar;%APP_HOME%\lib\bson-record-codec-4.9.1.jar;%APP_HOME%\lib\bson-4.9.1.jar
 
 
 @rem Execute cse-110-project-team-13
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CSE_110_PROJECT_TEAM_13_OPTS%  -classpath "%CLASSPATH%" QuickStart %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CSE_110_PROJECT_TEAM_13_OPTS%  -classpath "%CLASSPATH%" LoginFrame %*
 
 :end
 @rem End local scope for the variables with windows NT shell

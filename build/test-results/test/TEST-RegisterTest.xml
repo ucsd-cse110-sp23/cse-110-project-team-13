@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="RegisterTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-06-08T18:28:24" hostname="LAPTOP-PHAURQUR" time="7.875">
+  <properties/>
+  <testcase name="testValidEmail()" classname="RegisterTest" time="2.873"/>
+  <testcase name="testAlreadyRegisteredEmail()" classname="RegisterTest" time="3.601"/>
+  <testcase name="testBlankFields()" classname="RegisterTest" time="0.72"/>
+  <testcase name="testDifferentPasswords()" classname="RegisterTest" time="0.681"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

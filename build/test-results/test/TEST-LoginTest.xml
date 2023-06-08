@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="LoginTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-06-08T18:28:09" hostname="LAPTOP-PHAURQUR" time="14.876">
+  <properties/>
+  <testcase name="testNoAutomaticLogin()" classname="LoginTest" time="2.862"/>
+  <testcase name="testValidEmail()" classname="LoginTest" time="3.51"/>
+  <testcase name="testYesAutomaticLogin()" classname="LoginTest" time="3.552"/>
+  <testcase name="testWrongPassword()" classname="LoginTest" time="3.547"/>
+  <testcase name="testBlankFields()" classname="LoginTest" time="0.697"/>
+  <testcase name="testInvalidEmail()" classname="LoginTest" time="0.705"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

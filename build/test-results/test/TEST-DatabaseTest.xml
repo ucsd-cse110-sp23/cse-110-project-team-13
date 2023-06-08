@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DatabaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-06-05T22:39:31" hostname="LAPTOP-PHAURQUR" time="1.405">
+<testsuite name="DatabaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-06-08T18:28:08" hostname="LAPTOP-PHAURQUR" time="0.976">
   <properties/>
-  <testcase name="testBasicCRUD()" classname="DatabaseTest" time="1.405"/>
+  <testcase name="testBasicCRUD()" classname="DatabaseTest" time="0.976"/>
   <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[Jun 05, 2023 3:39:31 PM com.mongodb.internal.diagnostics.logging.Loggers shouldUseSLF4J
-WARNING: SLF4J not found on the classpath.  Logging is disabled for the 'org.mongodb.driver' component
-]]></system-err>
+  <system-err><![CDATA[]]></system-err>
 </testsuite>

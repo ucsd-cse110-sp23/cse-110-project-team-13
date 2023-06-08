@@ -8,8 +8,8 @@ class Question extends JPanel {
 
   JLabel index;         //might be needed
   JTextField qName;  //text of the question
-  JButton doneButton;   //delete question
   String answer;
+  Boolean isEmail;
 
   Color gray = new Color(218, 229, 234);
 
@@ -17,7 +17,6 @@ class Question extends JPanel {
     this.setPreferredSize(new Dimension(400, 20)); // set size of task
     this.setBackground(gray); // set background color of task
     this.setLayout(new BorderLayout()); // set layout of task
-
     answer = "";
 
     index = new JLabel(""); // create index label
@@ -30,23 +29,12 @@ class Question extends JPanel {
     qName.setBackground(gray); // set background color of text field
     qName.setEditable(false);
     this.add(qName, BorderLayout.CENTER);
-
-    doneButton = new JButton("Delete");
-    doneButton.setPreferredSize(new Dimension(120, 20));
-    doneButton.setBorder(BorderFactory.createEmptyBorder());
-    doneButton.setFocusPainted(false);
-    this.add(doneButton, BorderLayout.EAST);
-  }
-
-  public JButton getDone() {
-    return doneButton;
   }
 }
 
 class Footer extends JPanel {
 
-  JButton addButton;
-  JButton clearButton;
+  JButton startButton;
 
   Color backgroundColor = new Color(240, 248, 255);
   Border emptyBorder = BorderFactory.createEmptyBorder();
@@ -56,27 +44,19 @@ class Footer extends JPanel {
     this.setBackground(backgroundColor);
     this.setLayout(new GridLayout(1, 4));
 
-    addButton = new JButton("New Question"); // add task button
-    addButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
-    this.add(addButton); // add to footer
-
-    clearButton = new JButton("Clear All"); // clear button
-    clearButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
-    this.add(clearButton); // add to footer
-
+    startButton = new JButton("Start"); // add task button
+    startButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
+    this.add(startButton); // add to footer
   }
 
-  public JButton getAddButton() {
-    return addButton;
-  }
-
-  public JButton getClearButton() {
-    return clearButton;
+  public JButton getStartButton() {
+    return startButton;
   }
 }
 
 class Header extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
+  JButton logoutButton; //added logout button
 
   Header() {
     this.setPreferredSize(new Dimension(400, 60)); // Size of the header
@@ -86,6 +66,16 @@ class Header extends JPanel {
     titleText.setFont(new Font("Sans-serif", Font.BOLD, 20));
     titleText.setHorizontalAlignment(JLabel.CENTER); // Align the text to the center
     this.add(titleText); // Add the text to the header
+
+    //logoutbutton 
+    logoutButton = new JButton("Logout"); // add logout button
+    logoutButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
+    this.add(logoutButton); // add to header
+  }
+
+  //method to get logoutButton
+  public JButton getLogOutButton() {
+    return logoutButton; 
   }
 }
 
@@ -95,59 +85,67 @@ class AppFrame extends JFrame {
   private Footer footer;
   private Body body;
 
-  private JButton addButton;
-  private JButton clearButton;
+  private JButton startButton;
+  //adding logoutButton
+  private JButton logoutButton; 
+  private String appEmail;
 
-  AppFrame() {
+  AppFrame(String username) {
+    appEmail = username;
     this.setSize(400, 600); // 400 width and 600 height
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close on exit
     this.setVisible(true); // Make visible
 
     header = new Header();
     footer = new Footer();
-    body = new Body();
+    body = new Body(username);
 
     this.add(header, BorderLayout.NORTH); // Add title bar on top of the screen
     this.add(footer, BorderLayout.SOUTH); // Add footer on bottom of the screen
     this.add(body, BorderLayout.CENTER); // Add body in middle of footer and title
 
-    addButton = footer.getAddButton();
-    clearButton = footer.getClearButton();
+    startButton = footer.getStartButton();
+    logoutButton = header.getLogOutButton();
 
     addListeners();
     this.revalidate();
   }
 
   public void addListeners() {
-    addButton.addMouseListener(
+    startButton.addMouseListener(
       new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
           try {
-            body.voiceCommands();
+            body.voiceCommands(null);
           }
           catch (IOException | InterruptedException e2){
-            System.out.println("Error");
+            e2.getStackTrace();
           }
         }
       }
     );
 
-    //clear all questions from history
-    clearButton.addMouseListener(
+    logoutButton.addMouseListener(
       new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
-          body.clearHistory();
+          File file = new File("lastLogin.txt");
+          file.delete();
+          closeFrame();
+          new LoginFrame();
         }
       }
     );
   }
+
+  public void closeFrame() {
+    //Close the Login Page
+    this.setVisible(false);
+    this.dispose();
+  }
+
 }
 
 public class SayIt {
-  public static void main(String args[]) {
-    //Launches App by first Logging In
-    LoginFrame frame = new LoginFrame();
-  }
 } 

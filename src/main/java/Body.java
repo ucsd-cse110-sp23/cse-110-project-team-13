@@ -4,24 +4,27 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Currency;
 
 public class Body extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
   public JPanel prompt;
   public JPanel history;
-  public DefaultListModel<String> model;
   public boolean micOpen;
-  public ArrayList<Question> questions;
   public Recording recording;
   public Question currQuestion;
   private JScrollPane scrollHistory;
+  public String appEmail;
+  public JTextArea questionPanel;
+  public JTextArea answerPanel;
+  private Boolean debug;
 
-  Body() {
+  Body(String username) {
     prompt = new JPanel();
     history = new JPanel();
     micOpen = false;
-    questions = new ArrayList<Question>();
     recording = new Recording();
+    appEmail = username;
 
     // Set the layout manager of this JPanel to GridBagLayout
     this.setLayout(new GridBagLayout());
@@ -35,18 +38,30 @@ public class Body extends JPanel {
     prompt.setPreferredSize(new Dimension(400, 370));
     history.setPreferredSize(new Dimension(400, 1000));
 
-    model = new DefaultListModel<String>();
-    JList<String> qnaList = new JList<String>(model);
-    qnaList.setVisibleRowCount(2);
-    qnaList.setCellRenderer(new AlternatingRowRenderer());
+    questionPanel = new JTextArea();
+    questionPanel.setLineWrap(true);
+    questionPanel.setEditable(false);
+    questionPanel.setBorder(BorderFactory.createCompoundBorder(
+      questionPanel.getBorder(), 
+      BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-    JPanel qnaPanel = new JPanel(new BorderLayout());
-    JScrollPane qnaScroll = new JScrollPane(qnaList);
+    answerPanel = new JTextArea();
+    answerPanel.setBackground(new Color(240, 240, 240));
+    answerPanel.setLineWrap(true);
+    answerPanel.setEditable(false);
+    answerPanel.setBorder(BorderFactory.createCompoundBorder(
+      answerPanel.getBorder(), 
+      BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+    JPanel qnaPanel = new JPanel(new GridLayout(2, 1));
+    qnaPanel.add(questionPanel);
+    qnaPanel.add(answerPanel);
+
+    JScrollPane qnaScroll = new JScrollPane(qnaPanel);
     qnaScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    qnaPanel.add(qnaScroll, BorderLayout.CENTER);
 
     prompt.setLayout(new BorderLayout());
-    prompt.add(qnaPanel, BorderLayout.CENTER);
+    prompt.add(qnaScroll, BorderLayout.CENTER);
     
     // Add the prompt panel to this JPanel, taking up 2/3 of the available space
     gbc.gridx = 0;
@@ -74,6 +89,8 @@ public class Body extends JPanel {
   
     this.setPreferredSize(new Dimension(400, 960));
     this.setBackground(backgroundColor);
+
+    loadQuestions();
   }
 
   //removes question(s) from question history 
@@ -83,71 +100,91 @@ public class Body extends JPanel {
         history.remove(c); // remove the component
       }
     }
-    questions.clear();
-    model.clear();
+    clearPanels();
     this.repaint(); 
     this.revalidate();
+    Delete.clearAll(appEmail);
   }
   
 
-  //Loads Previous Questions from Text File
-  public ArrayList<Question> loadQuestions() {
+  //Loads Previous Questions from Database
+  public void loadQuestions() {
     ArrayList<Question> questionList = new ArrayList<Question>();
-
-    try{
-      FileReader reader = new FileReader("questions.txt");
-      BufferedReader buffer = new BufferedReader(reader);
-      String line = "";
-
-      while ((line = buffer.readLine()) != null){
-        Question question = new Question();
-        question.qName.setText(line);
-        line = buffer.readLine();
-        question.answer = line;
-        questionList.add(question);
-      }
-
-      buffer.close();
-      reader.close();
-
-      this.revalidate();
+    questionList = Read.readUserChatDataByEmail(appEmail);
+    for (Question q : questionList) {
+      history.add(q);
+      q.qName.addMouseListener(
+        new MouseAdapter(){
+          @Override
+          public void mousePressed(MouseEvent e){
+            clearPanels();
+            if (q.isEmail){
+              questionPanel.setText(q.qName.getText().substring(7));
+            }
+            else{
+              questionPanel.setText(q.qName.getText().substring(10));
+            }
+            answerPanel.setText(q.answer);
+            currQuestion = q;
+          }
+        }
+      );
     }
-    catch(Exception e){
-      e.getStackTrace();
-    }
-
-    return questionList; 
   } 
 
-  public void voiceCommands() throws IOException, InterruptedException{
+  public void voiceCommands(String filePath) throws IOException, InterruptedException{
     if (micOpen == false){
       recording.openMicrophone();
       micOpen = true;
     }
     else{
-      recording.closeMicrophone();
-      micOpen = false;
+      if (filePath == null) {
+        recording.closeMicrophone();
+        micOpen = false;
+      }
       try {
-        String transcript = TranscribeAudio.transcribeAudio("recording.wav");
-        if (transcript.length() >= 10 && transcript.substring(0, 10).toLowerCase() == "question.") {
-          model.clear();
-          newQuestion(transcript.substring(10));
+        String transcript;
+        if (filePath == null)
+          transcript = TranscribeAudio.transcribeAudio("recording.wav").strip();
+        else
+          transcript = TranscribeAudio.transcribeAudio(filePath).strip();
+        if (transcript.length() >= 10 && transcript.substring(0, 8).toLowerCase().equals("question")) {
+          newQuestion(transcript.substring(9), false);
         }
-        else if (transcript.toLowerCase() == "delete prompt") {
+        else if (transcript.length() >= 20 && 
+        transcript.substring(0, 12).toLowerCase().equals("create email")) {
+          newQuestion(transcript, true);
+        }
+        else if (transcript.length() >= 15 && 
+        transcript.substring(0, 10).toLowerCase().equals("send email")) {
+          sendEmail(transcript);
+        }
+        else if (transcript.toLowerCase().equals("delete prompt") || transcript.toLowerCase().equals("delete prompt.")) {
+          if (currQuestion == null){
+            JOptionPane.showMessageDialog(null, "There is no prompt to delete", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+          }
           history.remove(currQuestion);
-          questions.remove(currQuestion);
+          clearPanels();
           repaint();
           revalidate();
+          Delete.clearOne(currQuestion.qName.getText(), appEmail);
         }
-        else if (transcript.toLowerCase() == "clear all") {
+        else if (transcript.toLowerCase().equals("clear all") || transcript.toLowerCase().equals("clear all.")) {
           clearHistory();
-          model.clear();
+          clearPanels();
           repaint(); 
           revalidate();
+          Delete.clearAll(appEmail);
         }
-
-        
-
+        else if (transcript.toLowerCase().equals("setup email") || transcript.toLowerCase().equals("set up email") || 
+        transcript.toLowerCase().equals("set up email.") || transcript.toLowerCase().equals("setup email.")) {
+          new SetupEmailFrame(appEmail);
+        }
+        else{
+          JOptionPane.showMessageDialog(null, "Sorry, I couldn't understand you. Your message was:\n" + transcript, "Error", JOptionPane.INFORMATION_MESSAGE);
+          return;
+        }
       }
       catch (IOException | InterruptedException e){
         e.getStackTrace();
@@ -155,89 +192,122 @@ public class Body extends JPanel {
     }
   }
 
-  public void newQuestion(String transcript) throws IOException, InterruptedException{
-    String question = transcript;
-    model.clear();
+  public void newQuestion(String transcript, Boolean makeEmail) throws IOException, InterruptedException{
+    String question = transcript.strip();
+    clearPanels();
     String generatedText = "";
-    model.addElement(question);
+    
+    questionPanel.setText(question);
     Question newQuestion = new Question();
+    if (makeEmail){
+      question = "Email: " + question;
+    }
+    else {
+      question = "Question: " + question;
+    }
     newQuestion.qName.setText(question);
-    JButton doneButton = newQuestion.getDone(); 
-    doneButton.addMouseListener(
-      new MouseAdapter(){
-        @Override
-        public void mousePressed(MouseEvent e){
-          history.remove(newQuestion);
-          questions.remove(newQuestion);
-          repaint(); 
-          revalidate(); 
-        }
-      }
-    );
-
     generatedText = ChatGPT.generateText(question, 2048);
-    generatedText = generatedText.replace("\n", "");
+    generatedText = generatedText.strip();
+    if (makeEmail){
+      String[] displayName = Read.sendEmailInfo(appEmail);
+      if (displayName == null){
+      }
+      else {
+        generatedText = generatedText.substring(0, generatedText.length() - 11);
+        generatedText += displayName[2];
+      }
+    }
     newQuestion.answer = generatedText;
+
     newQuestion.qName.addMouseListener(
       new MouseAdapter(){
         @Override
         public void mousePressed(MouseEvent e){
-          model.clear();
-          model.addElement(newQuestion.qName.getText());
-          model.addElement(newQuestion.answer);
+          clearPanels();
+          if (newQuestion.isEmail){
+            questionPanel.setText(newQuestion.qName.getText().substring(7));
+          }
+          else{
+            questionPanel.setText(newQuestion.qName.getText().substring(10));
+          }
+          answerPanel.setText(newQuestion.answer);
           currQuestion = newQuestion;
         }
       }
     );
 
     history.add(newQuestion);
-    questions.add(newQuestion);
-    model.addElement(generatedText);
+    answerPanel.setText(generatedText);
     currQuestion = newQuestion;
 
+    if (makeEmail){
+      newQuestion.isEmail = true;
+      Create.addEmail(question, generatedText, appEmail);
+    }
+    else{
+      newQuestion.isEmail = false;
+      Create.addQuestionAndAnswer(question, generatedText, appEmail);
+    }
+    
     this.revalidate();
   }
 
-  public void saveQuestions() {
-    try {
-      FileWriter writer = new FileWriter("questions.txt");
+  public Boolean sendEmail(String transcript){
+    if (currQuestion == null || currQuestion.isEmail == null || currQuestion.isEmail == false){
+      JOptionPane.showMessageDialog(null, "Please select an email", "Error", JOptionPane.INFORMATION_MESSAGE);
+      return false;
+    }
 
-      for (int i = 0; i < questions.size(); i++) {
-        writer.write(questions.get(i).qName.getText());
-        writer.write('\n');
-        writer.write(questions.get(i).answer);
-        writer.write('\n');
-        writer.flush();
+    // find email from transcript
+    String realEmail = "";
+    int ctr = 0;
+    for (int i = transcript.length() - 1; i > 0; i--){
+      if (transcript.charAt(i) == ' '){
+        if (ctr != 0)
+          break;
+        else {
+          ctr++;
+          continue;
+        }
       }
-      writer.close();
+      else if (transcript.charAt(i) == 't' && transcript.charAt(i-1) == 'a'){
+        realEmail += '@';
+        i--;i--;
+        continue;
+      }
+      realEmail += transcript.charAt(i);
     }
-    catch (Exception e){
-      e.getStackTrace();
+
+    realEmail = new StringBuilder(realEmail).reverse().toString().toLowerCase();
+
+    String[] emailInfo = new String[7];
+    emailInfo = Read.sendEmailInfo(appEmail);
+    if (emailInfo == null){
+      if (!debug)
+        JOptionPane.showMessageDialog(null, "Please setup your email first with the 'Setup Email' voice command", "Error", JOptionPane.INFORMATION_MESSAGE);
+      return false;
     }
-  }
-
-}
-
-class AlternatingRowRenderer extends JLabel implements ListCellRenderer<String> {
-  private static final Color EVEN_ROW_COLOR = Color.WHITE;
-  private static final Color ODD_ROW_COLOR = new Color(240, 240, 240);
-
-  AlternatingRowRenderer() {
-    setOpaque(true);
-    setBorder(new EmptyBorder(5, 10, 5, 10));
-  }
-
-  @Override
-  public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-    setText(value);
-    if (index % 2 == 0) {
-      setBackground(EVEN_ROW_COLOR);
-      setHorizontalAlignment(SwingConstants.LEFT);
-    } 
     else {
-      setBackground(ODD_ROW_COLOR);
-      setHorizontalAlignment(SwingConstants.RIGHT);
+      Exception result = SendEmail.sendEmail(emailInfo[3], emailInfo[6], realEmail, emailInfo[4], emailInfo[5], currQuestion.answer);
+      currQuestion = null;
+      questionPanel.setText(transcript);
+      if (result == null){
+        answerPanel.setText("Your email has been successfully sent!");
+        return true;
+      }
+      else {
+        answerPanel.setText(result.toString());
+        return false;
+      }
     }
-    return this;
+  }
+
+  public void clearPanels(){
+    questionPanel.setText("");
+    answerPanel.setText("");
+  }
+
+  public void debugOn(){
+    debug = true;
   }
 }

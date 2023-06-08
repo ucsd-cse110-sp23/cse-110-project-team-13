@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MockRecorderTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-06-05T22:39:33" hostname="LAPTOP-PHAURQUR" time="0.01">
+<testsuite name="MockRecorderTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-06-08T18:28:32" hostname="LAPTOP-PHAURQUR" time="0.004">
   <properties/>
-  <testcase name="testOpenMicrophone" classname="MockRecorderTest" time="0.004"/>
+  <testcase name="testOpenMicrophone" classname="MockRecorderTest" time="0.002"/>
   <testcase name="MockAudioSystem" classname="MockRecorderTest" time="0.0"/>
   <testcase name="MockAudioInputStreamTest" classname="MockRecorderTest" time="0.0"/>
-  <testcase name="MockTargetDataLineOpen" classname="MockRecorderTest" time="0.001"/>
+  <testcase name="MockTargetDataLineOpen" classname="MockRecorderTest" time="0.0"/>
   <testcase name="MockTargetDataLineStop" classname="MockRecorderTest" time="0.0"/>
   <testcase name="MockTargetDataLineClose" classname="MockRecorderTest" time="0.0"/>
   <testcase name="MockTargetDataLineStart" classname="MockRecorderTest" time="0.0"/>
