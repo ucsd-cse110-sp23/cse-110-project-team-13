@@ -211,7 +211,7 @@ public class Body extends JPanel {
       if (displayName == null){
       }
       else {
-        generatedText = generatedText.substring(0, question.length() - 11);
+        generatedText = generatedText.substring(0, generatedText.length() - 11);
         generatedText += displayName[2];
       }
     }
@@ -251,25 +251,32 @@ public class Body extends JPanel {
   }
 
   public void sendEmail(String transcript){
-    if (currQuestion.isEmail == false){
+    if (currQuestion == null || currQuestion.isEmail == null || currQuestion.isEmail == false){
       JOptionPane.showMessageDialog(null, "Please select an email", "Error", JOptionPane.INFORMATION_MESSAGE);
       return;
     }
 
     // find email from transcript
     String realEmail = "";
+    int ctr = 0;
     for (int i = transcript.length() - 1; i > 0; i--){
-      if (transcript.charAt(i) == ' ')
-        break;
+      if (transcript.charAt(i) == ' '){
+        if (ctr != 0)
+          break;
+        else {
+          ctr++;
+          continue;
+        }
+      }
       else if (transcript.charAt(i) == 't' && transcript.charAt(i-1) == 'a'){
         realEmail += '@';
-        i--;
+        i--;i--;
         continue;
       }
       realEmail += transcript.charAt(i);
     }
 
-    realEmail = new StringBuilder(realEmail).reverse().toString();
+    realEmail = new StringBuilder(realEmail).reverse().toString().toLowerCase();
     System.out.println(realEmail);
 
     String[] emailInfo = new String[7];
