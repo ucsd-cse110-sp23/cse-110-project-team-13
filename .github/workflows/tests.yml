@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [ DBIntegration ]
+    branches: [ MS2-Demo ]
 
 jobs:
   build:
