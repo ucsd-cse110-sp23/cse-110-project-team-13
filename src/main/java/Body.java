@@ -15,14 +15,14 @@ public class Body extends JPanel {
   public Recording recording;
   public Question currQuestion;
   private JScrollPane scrollHistory;
-  public String email;
+  public String appEmail;
 
   Body(String username) {
     prompt = new JPanel();
     history = new JPanel();
     micOpen = false;
     recording = new Recording();
-    email = username;
+    appEmail = username;
 
     // Set the layout manager of this JPanel to GridBagLayout
     this.setLayout(new GridBagLayout());
@@ -89,54 +89,81 @@ public class Body extends JPanel {
     model.clear();
     this.repaint(); 
     this.revalidate();
-    Delete.clearAll();
+    Delete.clearAll(appEmail);
   }
   
 
   //Loads Previous Questions from Database
-  public ArrayList<Question> loadQuestions() {
-    // ArrayList<Question> questionList = new ArrayList<Question>();
-    // questionList = Read.readUserChatDataByEmail(email);
-    return null;
+  public void loadQuestions() {
+    ArrayList<Question> questionList = new ArrayList<Question>();
+    questionList = Read.readUserChatDataByEmail(appEmail);
+    for (Question q : questionList) {
+      history.add(q);
+      q.qName.addMouseListener(
+        new MouseAdapter(){
+          @Override
+          public void mousePressed(MouseEvent e){
+            model.clear();
+            model.addElement(q.qName.getText());
+            model.addElement(q.answer);
+            currQuestion = q;
+          }
+        }
+      );
+    }
   } 
 
-  public void voiceCommands(File file) throws IOException, InterruptedException{
+  public void voiceCommands(String filePath) throws IOException, InterruptedException{
     if (micOpen == false){
       recording.openMicrophone();
       micOpen = true;
     }
     else{
-      recording.closeMicrophone();
-      micOpen = false;
+      if (filePath == null) {
+        recording.closeMicrophone();
+        micOpen = false;
+      }
       try {
-        String transcript = TranscribeAudio.transcribeAudio("recording.wav").strip();
-        if (transcript.length() >= 10 && transcript.substring(0, 7).toLowerCase() == "question") {
-          newQuestion(transcript.substring(10));
+        String transcript;
+        if (filePath == null)
+          transcript = TranscribeAudio.transcribeAudio("recording.wav").strip();
+        else
+          transcript = TranscribeAudio.transcribeAudio(filePath).strip();
+        if (transcript.length() >= 10 && transcript.substring(0, 8).toLowerCase().equals("question")) {
+          newQuestion(transcript.substring(9), false);
         }
-        else if (transcript.length() >= 20 && transcript.substring(0, 11).toLowerCase() == "create email") {
-          newQuestion(transcript);
+        else if (transcript.length() >= 20 && 
+        transcript.substring(0, 12).toLowerCase().equals("create email")) {
+          newQuestion(transcript, true);
         }
-        else if (transcript.length() >= 15 && transcript.substring(0, 9).toLowerCase() == "send email") {
-          
+        else if (transcript.length() >= 15 && 
+        transcript.substring(0, 10).toLowerCase().equals("send email")) {
+          sendEmail(transcript.substring(11));
         }
-        else if (transcript.toLowerCase() == "delete prompt") {
+        else if (transcript.toLowerCase().equals("delete prompt") || transcript.toLowerCase().equals("delete prompt.")) {
+          if (currQuestion == null){
+            JOptionPane.showMessageDialog(null, "There is no prompt to delete", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+          }
           history.remove(currQuestion);
+          model.clear();
           repaint();
           revalidate();
-          Delete.clearOne(currQuestion.qName.getText());
+          Delete.clearOne(currQuestion.qName.getText(), appEmail);
         }
-        else if (transcript.toLowerCase() == "clear all") {
+        else if (transcript.toLowerCase().equals("clear all") || transcript.toLowerCase().equals("clear all.")) {
           clearHistory();
           model.clear();
           repaint(); 
           revalidate();
-          Delete.clearAll();
+          Delete.clearAll(appEmail);
         }
-        else if (transcript.toLowerCase() == "setup email") {
-          new SetupEmailFrame(email);
+        else if (transcript.toLowerCase().equals("setup email") || transcript.toLowerCase().equals("set up email") || 
+        transcript.toLowerCase().equals("set up email.") || transcript.toLowerCase().equals("setup email.")) {
+          new SetupEmailFrame(appEmail);
         }
         else{
-          JOptionPane.showMessageDialog(null, "Sorry, I cannot understand you. Your message was:\n" + transcript, "Error", JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog(null, "Sorry, I couldn't understand you. Your message was:\n" + transcript, "Error", JOptionPane.INFORMATION_MESSAGE);
           return;
         }
       }
@@ -146,7 +173,7 @@ public class Body extends JPanel {
     }
   }
 
-  public void newQuestion(String transcript) throws IOException, InterruptedException{
+  public void newQuestion(String transcript, Boolean makeEmail) throws IOException, InterruptedException{
     String question = transcript;
     model.clear();
     String generatedText = "";
@@ -154,7 +181,7 @@ public class Body extends JPanel {
     Question newQuestion = new Question();
     newQuestion.qName.setText(question);
     generatedText = ChatGPT.generateText(question, 2048);
-    generatedText = generatedText.replace("\n", "");
+    generatedText = generatedText.trim();
     newQuestion.answer = generatedText;
 
     newQuestion.qName.addMouseListener(
@@ -173,8 +200,35 @@ public class Body extends JPanel {
     model.addElement(generatedText);
     currQuestion = newQuestion;
 
-    Create.addQuestionAndAnswer(email, question, generatedText);
+    if (makeEmail == true){
+      newQuestion.isEmail = true;
+      Create.addEmail(question, generatedText, appEmail);
+    }
+    else{
+      newQuestion.isEmail = false;
+      Create.addQuestionAndAnswer(question, generatedText, appEmail);
+    }
+    
     this.revalidate();
+  }
+
+  public void sendEmail(String transcript){
+    if (currQuestion.isEmail == false){
+      JOptionPane.showMessageDialog(null, "Please select an email and not a prompt", "Error", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+
+    // find email from transcript
+
+    String[] emailInfo = new String[7];
+    emailInfo = Read.sendEmailInfo(appEmail);
+    if (emailInfo == null){
+      JOptionPane.showMessageDialog(null, "Please setup your email first with the 'Setup Email' voice command", "Error", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+    else {
+      // Send email logic
+    }
   }
 }
 

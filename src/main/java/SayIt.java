@@ -9,7 +9,7 @@ class Question extends JPanel {
   JLabel index;         //might be needed
   JTextField qName;  //text of the question
   String answer;
-  Boolean emailQuestion;
+  Boolean isEmail;
 
   Color gray = new Color(218, 229, 234);
 
@@ -18,7 +18,6 @@ class Question extends JPanel {
     this.setBackground(gray); // set background color of task
     this.setLayout(new BorderLayout()); // set layout of task
     answer = "";
-    emailQuestion = false;
 
     index = new JLabel(""); // create index label
     index.setPreferredSize(new Dimension(20, 20)); // set size of index label
@@ -31,11 +30,6 @@ class Question extends JPanel {
     qName.setEditable(false);
     this.add(qName, BorderLayout.CENTER);
   }
-}
-
-class User {
-  public String appEmail, appPassword, firstName, lastName, displayName, emailPassword, sendEmail;
-  public int SMTP, TLS;
 }
 
 class Footer extends JPanel {
@@ -116,28 +110,8 @@ class AppFrame extends JFrame {
         }
       }
     );
-
-    //clear all questions from history
-    clearButton.addMouseListener(
-      new MouseAdapter() {
-        @Override
-        public void mousePressed(MouseEvent e) {
-          body.clearHistory();
-        }
-      }
-    );
   }
 }
 
 public class SayIt {
-  public static void main(String args[]) {
-    //Launches App by first Logging In
-    String previousUser = Read.checkAutomaticLogin();
-    if (previousUser == null){
-      LoginFrame frame = new LoginFrame();
-    }
-    else {
-      new AppFrame(previousUser);
-    }
-  }
 } 
