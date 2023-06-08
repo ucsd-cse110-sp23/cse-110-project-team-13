@@ -75,7 +75,6 @@ class AppFrame extends JFrame {
   private Body body;
 
   private JButton startButton;
-  private JButton clearButton;
 
   AppFrame(String username) {
     this.setSize(400, 600); // 400 width and 600 height

@@ -32,13 +32,6 @@ public class LoginFrame extends JFrame {
 
     //constructor for login page
     LoginFrame() {
-        String previousUser = Read.checkAutomaticLogin();
-        if (previousUser == null){
-        }
-        else{
-          closeFrame();
-          new AppFrame(previousUser);
-        }
 
         //setups the page
         this.setTitle("Sign In Page");
@@ -152,6 +145,12 @@ public class LoginFrame extends JFrame {
     }
 
   public static void main (String[] args){
-    LoginFrame frame = new LoginFrame();
+    String previousUser = Read.checkAutomaticLogin();
+    if (previousUser == null){
+      LoginFrame frame = new LoginFrame();
+    }
+    else{
+      new AppFrame(previousUser);
+    }
   }
 }

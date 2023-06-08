@@ -4,18 +4,18 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.io.*;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class Body extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
   public JPanel prompt;
   public JPanel history;
-  public DefaultListModel<String> model;
   public boolean micOpen;
   public Recording recording;
   public Question currQuestion;
   private JScrollPane scrollHistory;
   public String appEmail;
+  public JTextArea questionPanel;
+  public JTextArea answerPanel;
 
   Body(String username) {
     prompt = new JPanel();
@@ -36,18 +36,23 @@ public class Body extends JPanel {
     prompt.setPreferredSize(new Dimension(400, 370));
     history.setPreferredSize(new Dimension(400, 1000));
 
-    model = new DefaultListModel<String>();
-    JList<String> qnaList = new JList<String>(model);
-    qnaList.setVisibleRowCount(2);
-    qnaList.setCellRenderer(new AlternatingRowRenderer());
+    JTextArea questionPanel = new JTextArea();
+    questionPanel.setLineWrap(true);
+    questionPanel.setEditable(false);
+    JTextArea answerPanel = new JTextArea();
+    answerPanel.setBackground(new Color(240, 240, 240));
+    answerPanel.setLineWrap(true);
+    answerPanel.setEditable(false);
 
-    JPanel qnaPanel = new JPanel(new BorderLayout());
-    JScrollPane qnaScroll = new JScrollPane(qnaList);
+    JPanel qnaPanel = new JPanel(new GridLayout(2, 1));
+    qnaPanel.add(questionPanel);
+    qnaPanel.add(answerPanel);
+
+    JScrollPane qnaScroll = new JScrollPane(qnaPanel);
     qnaScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    qnaPanel.add(qnaScroll, BorderLayout.CENTER);
 
     prompt.setLayout(new BorderLayout());
-    prompt.add(qnaPanel, BorderLayout.CENTER);
+    prompt.add(qnaScroll, BorderLayout.CENTER);
     
     // Add the prompt panel to this JPanel, taking up 2/3 of the available space
     gbc.gridx = 0;
@@ -86,7 +91,7 @@ public class Body extends JPanel {
         history.remove(c); // remove the component
       }
     }
-    model.clear();
+    clearPanels();
     this.repaint(); 
     this.revalidate();
     Delete.clearAll(appEmail);
@@ -103,9 +108,9 @@ public class Body extends JPanel {
         new MouseAdapter(){
           @Override
           public void mousePressed(MouseEvent e){
-            model.clear();
-            model.addElement(q.qName.getText());
-            model.addElement(q.answer);
+            clearPanels();
+            questionPanel.setText(q.qName.getText());
+            answerPanel.setText(q.answer);
             currQuestion = q;
           }
         }
@@ -146,14 +151,14 @@ public class Body extends JPanel {
             return;
           }
           history.remove(currQuestion);
-          model.clear();
+          clearPanels();
           repaint();
           revalidate();
           Delete.clearOne(currQuestion.qName.getText(), appEmail);
         }
         else if (transcript.toLowerCase().equals("clear all") || transcript.toLowerCase().equals("clear all.")) {
           clearHistory();
-          model.clear();
+          clearPanels();
           repaint(); 
           revalidate();
           Delete.clearAll(appEmail);
@@ -175,10 +180,17 @@ public class Body extends JPanel {
 
   public void newQuestion(String transcript, Boolean makeEmail) throws IOException, InterruptedException{
     String question = transcript;
-    model.clear();
+    clearPanels();
     String generatedText = "";
-    model.addElement(question);
+
+    questionPanel.setText(question.trim());
     Question newQuestion = new Question();
+    if (makeEmail){
+      question = "Email: " + question.trim();
+    }
+    else {
+      question = "Question: " + question.trim();
+    }
     newQuestion.qName.setText(question);
     generatedText = ChatGPT.generateText(question, 2048);
     generatedText = generatedText.trim();
@@ -188,19 +200,19 @@ public class Body extends JPanel {
       new MouseAdapter(){
         @Override
         public void mousePressed(MouseEvent e){
-          model.clear();
-          model.addElement(newQuestion.qName.getText());
-          model.addElement(newQuestion.answer);
+          clearPanels();
+          questionPanel.setText(newQuestion.qName.getText());
+          answerPanel.setText(newQuestion.answer);
           currQuestion = newQuestion;
         }
       }
     );
 
     history.add(newQuestion);
-    model.addElement(generatedText);
+    answerPanel.setText(generatedText);
     currQuestion = newQuestion;
 
-    if (makeEmail == true){
+    if (makeEmail){
       newQuestion.isEmail = true;
       Create.addEmail(question, generatedText, appEmail);
     }
@@ -230,28 +242,9 @@ public class Body extends JPanel {
       // Send email logic
     }
   }
-}
 
-class AlternatingRowRenderer extends JLabel implements ListCellRenderer<String> {
-  private static final Color EVEN_ROW_COLOR = Color.WHITE;
-  private static final Color ODD_ROW_COLOR = new Color(240, 240, 240);
-
-  AlternatingRowRenderer() {
-    setOpaque(true);
-    setBorder(new EmptyBorder(5, 10, 5, 10));
-  }
-
-  @Override
-  public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-    setText(value);
-    if (index % 2 == 0) {
-      setBackground(EVEN_ROW_COLOR);
-      setHorizontalAlignment(SwingConstants.LEFT);
-    } 
-    else {
-      setBackground(ODD_ROW_COLOR);
-      setHorizontalAlignment(SwingConstants.RIGHT);
-    }
-    return this;
+  public void clearPanels(){
+    questionPanel.setText("");
+    answerPanel.setText("");
   }
 }
