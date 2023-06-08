@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="VoiceCommandTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-06-08T02:03:44" hostname="LAPTOP-PHAURQUR" time="0.014">
+<testsuite name="VoiceCommandTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-06-08T06:10:01" hostname="LAPTOP-H6KHTHCM" time="0.017">
   <properties/>
-  <testcase name="deletePrompt" classname="VoiceCommandTests" time="0.009"/>
-  <testcase name="newQuestion" classname="VoiceCommandTests" time="0.002"/>
-  <testcase name="clearAll" classname="VoiceCommandTests" time="0.002"/>
+  <testcase name="deletePrompt" classname="VoiceCommandTests" time="0.004"/>
+  <testcase name="newQuestion" classname="VoiceCommandTests" time="0.005"/>
+  <testcase name="clearAll" classname="VoiceCommandTests" time="0.006"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

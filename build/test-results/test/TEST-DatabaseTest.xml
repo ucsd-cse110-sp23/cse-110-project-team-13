@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DatabaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-06-08T02:03:42" hostname="LAPTOP-PHAURQUR" time="1.41">
+<testsuite name="DatabaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-06-08T06:09:59" hostname="LAPTOP-H6KHTHCM" time="1.596">
   <properties/>
-  <testcase name="testBasicCRUD()" classname="DatabaseTest" time="1.41"/>
+  <testcase name="testBasicCRUD()" classname="DatabaseTest" time="1.596"/>
   <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[Jun 07, 2023 7:03:42 PM com.mongodb.internal.diagnostics.logging.Loggers shouldUseSLF4J
+  <system-err><![CDATA[Jun 07, 2023 11:09:59 PM com.mongodb.internal.diagnostics.logging.Loggers shouldUseSLF4J
 WARNING: SLF4J not found on the classpath.  Logging is disabled for the 'org.mongodb.driver' component
 ]]></system-err>
 </testsuite>

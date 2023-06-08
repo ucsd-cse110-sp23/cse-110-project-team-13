@@ -56,6 +56,7 @@ class Footer extends JPanel {
 
 class Header extends JPanel {
   Color backgroundColor = new Color(240, 248, 255);
+  JButton logoutButton; //added logout button
 
   Header() {
     this.setPreferredSize(new Dimension(400, 60)); // Size of the header
@@ -65,6 +66,17 @@ class Header extends JPanel {
     titleText.setFont(new Font("Sans-serif", Font.BOLD, 20));
     titleText.setHorizontalAlignment(JLabel.CENTER); // Align the text to the center
     this.add(titleText); // Add the text to the header
+
+    //logoutbutton 
+    logoutButton = new JButton("Logout"); // add logout button
+    logoutButton.setFont(new Font("Sans-serif", Font.ITALIC, 8)); // set font
+    this.add(logoutButton); // add to header
+    logoutButton.setBounds(300, 30, 30, 30);
+  }
+
+  //method to get logoutButton
+  public JButton getLogOutButton() {
+    return logoutButton; 
   }
 }
 
@@ -75,6 +87,14 @@ class AppFrame extends JFrame {
   private Body body;
 
   private JButton startButton;
+  private JButton LogoutButton; 
+  
+
+  //adding logoutButton
+  private JButton logoutButton; 
+
+  //adding logoutButton
+  private JButton logoutButton; 
 
   AppFrame(String username) {
     this.setSize(400, 600); // 400 width and 600 height
@@ -90,6 +110,7 @@ class AppFrame extends JFrame {
     this.add(body, BorderLayout.CENTER); // Add body in middle of footer and title
 
     startButton = footer.getStartButton();
+    logoutButton = header.getLogOutButton();
 
     addListeners();
     this.revalidate();
@@ -106,6 +127,15 @@ class AppFrame extends JFrame {
           catch (IOException | InterruptedException e2){
             e2.getStackTrace();
           }
+        }
+      }
+    );
+
+    logoutButton.addMouseListener(
+      new MouseAdapter() {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            //FIX ME
         }
       }
     );
