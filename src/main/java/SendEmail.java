@@ -29,6 +29,7 @@ public class SendEmail {
 		props.put("mail.smtp.port", TLSPort);
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.ssl.enable", "true");
 		
 		Authenticator auth = new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
@@ -49,7 +50,7 @@ public class SendEmail {
 	      msg.addHeader("format", "flowed");
 	      msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-	      msg.setFrom(new InternetAddress("no_reply@example.com", "NoReply-JD"));
+	      msg.setFrom(new InternetAddress("no_reply@example.com", "SayIt Application"));
 
 	      msg.setReplyTo(InternetAddress.parse("no_reply@example.com", false));
 

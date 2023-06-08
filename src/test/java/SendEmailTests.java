@@ -9,32 +9,33 @@ import org.junit.Test;
 
 public class SendEmailTests {
 
-  // @Test
-  // public void sendOneEmail(){
-  //   String fromEmail = "leaguetriton@gmail.com";
-  //   String emailPassword = "Lmao123@";
-  //   String toEmail = "bgsong03@gmail.com";
-  //   String SMTPHost = "smtp.gmail.com";
-  //   String TLSPort = "587";
-  //   String body = "Test";
+  @Test
+  public void sendOneEmail(){
+    String fromEmail = "bgsong03@gmail.com";
+    String emailPassword = "lqbdysmhzgotcjeb";
+    String toEmail = "bong@ucsd.edu";
+    String SMTPHost = "smtp.gmail.com";
+    String TLSPort = "465";
+    String body = "Test";
 
-  //   assertNull(SendEmail.sendEmail(fromEmail, emailPassword, toEmail, SMTPHost, TLSPort, body));
-  // }
+    assertNull(SendEmail.sendEmail(fromEmail, emailPassword, toEmail, SMTPHost, TLSPort, body));
+  }
 
-  // @Test
-  // public void failEmailSend() {
-  //   String fromEmail = "fake_email@gmail.com";
-  //   String emailPassword = "password123";
-  //   String toEmail = "bgsong03@gmail.com";
-  //   String SMTPHost = "smtp.gmail.com";
-  //   String TLSPort = "587";
-  //   String body = "Test";
+  @Test
+  public void failEmailSend() {
+    String fromEmail = "fake_email@gmail.com";
+    String emailPassword = "password123";
+    String toEmail = "bgsong03@gmail.com";
+    String SMTPHost = "smtp.gmail.com";
+    String TLSPort = "465";
+    String body = "Test";
 
-  //   assertNotNull(SendEmail.sendEmail(fromEmail, emailPassword, toEmail, SMTPHost, TLSPort, body));
-  // }
+    assertNotNull(SendEmail.sendEmail(fromEmail, emailPassword, toEmail, SMTPHost, TLSPort, body));
+  }
 
   @Test
   public void setupEmail(){
+    Delete.clearDatabase();
     String newUserEmail = "email_test@gmail.com";
     String newUserPassword = "12345";
     String fromEmail = "fake_email@gmail.com";
@@ -63,6 +64,7 @@ public class SendEmailTests {
 
   @Test
   public void createEmail(){
+    Delete.clearDatabase();
     String transcript = "Create email to Jill for our meeting at 3";
     String testEmail = "email_test@gmail.com";
     Create.addLoginInfo(testEmail, "12345");
@@ -78,50 +80,54 @@ public class SendEmailTests {
     assertTrue(body.currQuestion.isEmail);
     assertTrue(body.currQuestion.qName.getText().equals("Email: " + transcript));
     assertTrue(Read.readUserChatDataByEmail(testEmail).size() == 1);
+    Delete.clearDatabase();
+  }
+
+  @Test
+  public void sendCreatedEmail(){
+    Delete.clearDatabase();
+    String transcript = "Create email to Jill for our meeting at 3";
+    String firstName = "Bryce";
+    String lastName = "Ong";
+    String displayName = "Bong";
+    String testEmail = "email_test@gmail.com";
+    String fromEmail = "bgsong03@gmail.com";
+    String emailPassword = "lqbdysmhzgotcjeb";
+    String SMTPHost = "smtp.gmail.com";
+    String TLSPort = "465";
+
+    Create.addLoginInfo(testEmail, "12345");
+    Body body = new Body("email_test@gmail.com");
+    try {
+      body.newQuestion(transcript, true);
+    }
+    catch (IOException | InterruptedException e){
+      e.getStackTrace();
+    }
+
+    Update.updateSetupEmailInfo(testEmail, firstName, lastName, displayName, fromEmail, SMTPHost, TLSPort, emailPassword);
+    assertTrue(body.sendEmail("Send Email to bong at ucsd.edu"));
 
     Delete.clearDatabase();
   }
 
-  // @Test
-  // public void sendCreatedEmail(){
-  //   String transcript = "Create email to Jill for our meeting at 3";
-  //   String firstName = "Bryce";
-  //   String lastName = "Ong";
-  //   String displayName = "Bong";
-  //   String testEmail = "email_test@gmail.com";
-  //   String fromEmail = "leaguetriton@gmail.com";
-  //   String emailPassword = "Lmao123@";
-  //   String SMTPHost = "smtp.gmail.com";
-  //   String TLSPort = "587";
+  @Test
+  public void sendCreatedEmailNoSetup(){
+    String transcript = "Create email to Jill for our meeting at 3";
+    String testEmail = "email_test@gmail.com";
 
-  //   Create.addLoginInfo(testEmail, "12345");
-  //   Body body = new Body("email_test@gmail.com");
-  //   try {
-  //     body.newQuestion(transcript, true);
-  //   }
-  //   catch (IOException | InterruptedException e){
-  //     e.getStackTrace();
-  //   }
+    Create.addLoginInfo(testEmail, "12345");
+    Body body = new Body("email_test@gmail.com");
+    body.debugOn();
+    try {
+      body.newQuestion(transcript, true);
+    }
+    catch (IOException | InterruptedException e){
+      e.getStackTrace();
+    }
 
-  //   Update.updateSetupEmailInfo(testEmail, firstName, lastName, displayName, fromEmail, SMTPHost, TLSPort, emailPassword);
-  //   assertTrue(body.sendEmail("Send Email to bong at ucsd.edu"));
-  // }
-
-  // @Test
-  // public void sendCreatedEmailNoSetup(){
-  //   String transcript = "Create email to Jill for our meeting at 3";
-  //   String testEmail = "email_test@gmail.com";
-
-  //   Create.addLoginInfo(testEmail, "12345");
-  //   Body body = new Body("email_test@gmail.com");
-  //   try {
-  //     body.newQuestion(transcript, true);
-  //   }
-  //   catch (IOException | InterruptedException e){
-  //     e.getStackTrace();
-  //   }
-
-  //   assertFalse(body.sendEmail("Send Email to bong at ucsd.edu"));
-  // }
+    assertFalse(body.sendEmail("Send Email to bong at ucsd.edu"));
+    Delete.clearDatabase();
+  }
 
 }

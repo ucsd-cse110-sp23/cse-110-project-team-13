@@ -17,6 +17,7 @@ public class Body extends JPanel {
   public String appEmail;
   public JTextArea questionPanel;
   public JTextArea answerPanel;
+  private Boolean debug;
 
   Body(String username) {
     prompt = new JPanel();
@@ -278,12 +279,12 @@ public class Body extends JPanel {
     }
 
     realEmail = new StringBuilder(realEmail).reverse().toString().toLowerCase();
-    System.out.println(realEmail);
 
     String[] emailInfo = new String[7];
     emailInfo = Read.sendEmailInfo(appEmail);
     if (emailInfo == null){
-      JOptionPane.showMessageDialog(null, "Please setup your email first with the 'Setup Email' voice command", "Error", JOptionPane.INFORMATION_MESSAGE);
+      if (!debug)
+        JOptionPane.showMessageDialog(null, "Please setup your email first with the 'Setup Email' voice command", "Error", JOptionPane.INFORMATION_MESSAGE);
       return false;
     }
     else {
@@ -304,5 +305,9 @@ public class Body extends JPanel {
   public void clearPanels(){
     questionPanel.setText("");
     answerPanel.setText("");
+  }
+
+  public void debugOn(){
+    debug = true;
   }
 }

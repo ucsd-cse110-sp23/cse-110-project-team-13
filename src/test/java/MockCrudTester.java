@@ -1,10 +1,8 @@
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.ArgumentMatchers;
 
 import static org.junit.Assert.assertArrayEquals;
-import org.mockito.ArgumentMatchers.anyString;
-import org.mockito.Mockito.verify;
-import org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
@@ -18,7 +16,7 @@ public class MockCrudTester {
         mockCreate.addQuestionAndAnswer("question", "answer", "email@test.com");
         
         // Verify if the method was called with correct arguments
-        verify(mockCreate).addQuestionAndAnswer("question", "answer", "email@test.com");
+        Mockito.verify(mockCreate).addQuestionAndAnswer("question", "answer", "email@test.com");
     }
 
     @Test
@@ -27,7 +25,7 @@ public class MockCrudTester {
         MockCreate mockCreate = Mockito.mock(MockCreate.class);
         
         // Mock the behavior
-        Mockito.when(mockCreate.addLoginInfo(anyString(), anyString())).thenReturn(true);
+        Mockito.when(mockCreate.addLoginInfo(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())).thenReturn(true);
         
         // Call the method with the mock instance
         boolean result = mockCreate.addLoginInfo("email@test.com", "password");
@@ -36,7 +34,7 @@ public class MockCrudTester {
         assert(result);
         
         // Verify if the method was called with correct arguments
-        verify(mockCreate).addLoginInfo("email@test.com", "password");
+        Mockito.verify(mockCreate).addLoginInfo("email@test.com", "password");
     }
 
     @Test
@@ -48,7 +46,7 @@ public class MockCrudTester {
         mockCreate.addEmail("question", "answer", "email@test.com");
         
         // Verify if the method was called with correct arguments
-        verify(mockCreate).addEmail("question", "answer", "email@test.com");
+        Mockito.verify(mockCreate).addEmail("question", "answer", "email@test.com");
     }
 
     @Test
@@ -57,7 +55,7 @@ public class MockCrudTester {
 
         mockRead.userExists("email@test.com");
 
-        verify(mockRead).userExists("email@test.com");
+        Mockito.verify(mockRead).userExists("email@test.com");
     }
 
     @Test
@@ -66,29 +64,29 @@ public class MockCrudTester {
 
         mockRead.successfulLogin("email@test.com", "password");
 
-        verify(mockRead).successfulLogin("email@test.com", "password");
+        Mockito.verify(mockRead).successfulLogin("email@test.com", "password");
     }
 
     @Test
     void readUserChatDataByEmailTest() {
         MockRead mockRead = Mockito.mock(MockRead.class);
         ArrayList<Question> questions = new ArrayList<>();
-        when(mockRead.readUserChatDataByEmail(anyString())).thenReturn(questions);
+        Mockito.when(mockRead.readUserChatDataByEmail(ArgumentMatchers.anyString())).thenReturn(questions);
 
         ArrayList<Question> result = mockRead.readUserChatDataByEmail("email@test.com");
 
-        verify(mockRead).readUserChatDataByEmail("email@test.com");
+        Mockito.verify(mockRead).readUserChatDataByEmail("email@test.com");
         assert(result.equals(questions));
     }
 
     @Test
     void checkAutomaticLoginTest() {
         MockRead mockRead = Mockito.mock(MockRead.class);
-        when(mockRead.checkAutomaticLogin()).thenReturn("email@test.com");
+        Mockito.when(mockRead.checkAutomaticLogin()).thenReturn("email@test.com");
 
         String result = mockRead.checkAutomaticLogin();
 
-        verify(mockRead).checkAutomaticLogin();
+        Mockito.verify(mockRead).checkAutomaticLogin();
         assert(result.equals("email@test.com"));
     }
 
@@ -96,11 +94,11 @@ public class MockCrudTester {
     void sendEmailInfoTest() {
         MockRead mockRead = Mockito.mock(MockRead.class);
         String[] expectedInfo = new String[]{"John", "Doe", "jdoe", "jdoe@example.com", "smtp.example.com", "587", "password"};
-        when(mockRead.sendEmailInfo(anyString())).thenReturn(expectedInfo);
+        Mockito.when(mockRead.sendEmailInfo(ArgumentMatchers.anyString())).thenReturn(expectedInfo);
 
         String[] result = mockRead.sendEmailInfo("email@test.com");
 
-        verify(mockRead).sendEmailInfo("email@test.com");
+        Mockito.verify(mockRead).sendEmailInfo("email@test.com");
         assertArrayEquals(expectedInfo, result);
     }
 
@@ -108,11 +106,11 @@ public class MockCrudTester {
     void getUserInfoTest() {
         MockRead mockRead = Mockito.mock(MockRead.class);
         String[] expectedInfo = new String[]{"email@test.com", "password", "John", "Doe", "jdoe", "jdoe@example.com", "smtp.example.com", "587", "password"};
-        when(mockRead.getUserInfo(anyString())).thenReturn(expectedInfo);
+        Mockito.when(mockRead.getUserInfo(ArgumentMatchers.anyString())).thenReturn(expectedInfo);
 
         String[] result = mockRead.getUserInfo("email@test.com");
 
-        verify(mockRead).getUserInfo("email@test.com");
+        Mockito.verify(mockRead).getUserInfo("email@test.com");
         assertArrayEquals(expectedInfo, result);
     }
 
@@ -122,7 +120,7 @@ public class MockCrudTester {
         
         mockUpdate.updateSetupEmailInfo("applicationEmail@test.com", "firstName", "lastName", "displayName", "email@test.com", "SMTPHost", "TLSPort", "emailPassword");
 
-        verify(mockUpdate).updateSetupEmailInfo("applicationEmail@test.com", "firstName", "lastName", "displayName", "email@test.com", "SMTPHost", "TLSPort", "emailPassword");
+        Mockito.verify(mockUpdate).updateSetupEmailInfo("applicationEmail@test.com", "firstName", "lastName", "displayName", "email@test.com", "SMTPHost", "TLSPort", "emailPassword");
     }
     
     @Test
@@ -131,7 +129,7 @@ public class MockCrudTester {
 
         mockUpdate.automaticallyLog("email@test.com");
 
-        verify(mockUpdate).automaticallyLog("email@test.com");
+        Mockito.verify(mockUpdate).automaticallyLog("email@test.com");
     }
 
     @Test
@@ -140,7 +138,7 @@ public class MockCrudTester {
 
         mockUpdate.manuallyLog("email@test.com");
 
-        verify(mockUpdate).manuallyLog("email@test.com");
+        Mockito.verify(mockUpdate).manuallyLog("email@test.com");
     }
 
     @Test
@@ -149,7 +147,7 @@ public class MockCrudTester {
 
         mockDelete.clearAll("email@test.com");
 
-        verify(mockDelete).clearAll("email@test.com");
+        Mockito.verify(mockDelete).clearAll("email@test.com");
     }
     
     @Test
@@ -158,7 +156,7 @@ public class MockCrudTester {
 
         mockDelete.clearOne("testQuestion", "email@test.com");
 
-        verify(mockDelete).clearOne("testQuestion", "email@test.com");
+        Mockito.verify(mockDelete).clearOne("testQuestion", "email@test.com");
     }
 
     @Test
@@ -167,7 +165,7 @@ public class MockCrudTester {
 
         mockDelete.clearDatabase();
 
-        verify(mockDelete).clearDatabase();
+        Mockito.verify(mockDelete).clearDatabase();
     }
 }
 

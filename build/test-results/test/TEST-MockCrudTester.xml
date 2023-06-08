@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MockCrudTester" tests="15" skipped="0" failures="0" errors="0" timestamp="2023-06-08T13:23:54" hostname="LAPTOP-PHAURQUR" time="1.178">
+<testsuite name="MockCrudTester" tests="15" skipped="0" failures="0" errors="0" timestamp="2023-06-08T18:28:24" hostname="LAPTOP-PHAURQUR" time="0.526">
   <properties/>
-  <testcase name="clearDatabaseTest()" classname="MockCrudTester" time="0.992"/>
-  <testcase name="automaticallyLogTest()" classname="MockCrudTester" time="0.052"/>
-  <testcase name="readUserChatDataByEmailTest()" classname="MockCrudTester" time="0.056"/>
-  <testcase name="clearOneTest()" classname="MockCrudTester" time="0.002"/>
-  <testcase name="clearAllTest()" classname="MockCrudTester" time="0.002"/>
-  <testcase name="addLoginInfoTest()" classname="MockCrudTester" time="0.029"/>
-  <testcase name="sendEmailInfoTest()" classname="MockCrudTester" time="0.009"/>
+  <testcase name="clearDatabaseTest()" classname="MockCrudTester" time="0.429"/>
+  <testcase name="automaticallyLogTest()" classname="MockCrudTester" time="0.023"/>
+  <testcase name="readUserChatDataByEmailTest()" classname="MockCrudTester" time="0.037"/>
+  <testcase name="clearOneTest()" classname="MockCrudTester" time="0.0"/>
+  <testcase name="clearAllTest()" classname="MockCrudTester" time="0.001"/>
+  <testcase name="addLoginInfoTest()" classname="MockCrudTester" time="0.014"/>
+  <testcase name="sendEmailInfoTest()" classname="MockCrudTester" time="0.003"/>
   <testcase name="successfulLoginTest()" classname="MockCrudTester" time="0.002"/>
   <testcase name="addQuestionAndAnswerTest()" classname="MockCrudTester" time="0.001"/>
-  <testcase name="userExistsTest()" classname="MockCrudTester" time="0.003"/>
-  <testcase name="getUserInfoTest()" classname="MockCrudTester" time="0.002"/>
-  <testcase name="checkAutomaticLoginTest()" classname="MockCrudTester" time="0.003"/>
-  <testcase name="manuallyLogTest()" classname="MockCrudTester" time="0.002"/>
-  <testcase name="addEmailTest()" classname="MockCrudTester" time="0.002"/>
-  <testcase name="updateSetupEmailInfoTest()" classname="MockCrudTester" time="0.002"/>
+  <testcase name="userExistsTest()" classname="MockCrudTester" time="0.001"/>
+  <testcase name="getUserInfoTest()" classname="MockCrudTester" time="0.001"/>
+  <testcase name="checkAutomaticLoginTest()" classname="MockCrudTester" time="0.001"/>
+  <testcase name="manuallyLogTest()" classname="MockCrudTester" time="0.001"/>
+  <testcase name="addEmailTest()" classname="MockCrudTester" time="0.0"/>
+  <testcase name="updateSetupEmailInfoTest()" classname="MockCrudTester" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

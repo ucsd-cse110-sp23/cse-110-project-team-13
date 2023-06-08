@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="SendEmailTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-06-08T13:24:03" hostname="LAPTOP-PHAURQUR" time="11.499">
+<testsuite name="SendEmailTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-06-08T18:28:32" hostname="LAPTOP-PHAURQUR" time="35.133">
   <properties/>
-  <testcase name="createEmail" classname="SendEmailTests" time="8.002"/>
-  <testcase name="setupEmail" classname="SendEmailTests" time="3.497"/>
+  <testcase name="sendCreatedEmail" classname="SendEmailTests" time="11.931"/>
+  <testcase name="sendOneEmail" classname="SendEmailTests" time="1.124"/>
+  <testcase name="createEmail" classname="SendEmailTests" time="8.456"/>
+  <testcase name="failEmailSend" classname="SendEmailTests" time="0.549"/>
+  <testcase name="setupEmail" classname="SendEmailTests" time="4.635"/>
+  <testcase name="sendCreatedEmailNoSetup" classname="SendEmailTests" time="8.438"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
